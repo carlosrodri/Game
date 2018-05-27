@@ -16,12 +16,15 @@ public class PanelDrawing extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Game game;
 	private Image enemy, gunman, background, pasive, ulti, basic;
+	private final int POSITION_Y_STRING = 73;
+	private final int POSITION_Y_HABILITY = 30;
 
 	public PanelDrawing(Controller controller) {
-		enemy = new ImageIcon(getClass().getResource(ConstantsUI.ENEMY_IMG)).getImage();
+		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
 		gunman = new ImageIcon(getClass().getResource(ConstantsUI.GUNMAN_IMG)).getImage();
 		background = new ImageIcon(getClass().getResource(ConstantsUI.BACK_IMAGE)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
+//		pasive = new ImageIcon(getClass().getResource(ConstantsUI.PASSIVE_SHOOT)).getImage();
 		this.addKeyListener(controller);
 	}
 
@@ -39,8 +42,15 @@ public class PanelDrawing extends JPanel{
 	}
 
 	private void paintHabilities(Graphics g) {
-		g.drawString("Habilities: " + game.getLife(), (getWidth()/5), 20);
-		g.drawImage(basic, (getWidth()/5), 40, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.setColor(Color.WHITE);
+		g.setFont(ConstantsUI.FONT_GAME);
+		g.drawString("Habilities: " + game.getLife(), (getWidth()/5), 15);
+		g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
+//		g.drawImage(pasive, (getWidth()/4), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+//		g.drawString("R" + game.getLife(), (getWidth()/4), POSITION_Y_STRING);
+//		g.drawImage(ulti, (getWidth()/3), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+//		g.drawString("T" + game.getLife(), (getWidth()/3), POSITION_Y_STRING);
 	}
 
 	private void paintLife(Graphics g) {
