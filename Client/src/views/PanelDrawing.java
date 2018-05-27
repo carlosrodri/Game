@@ -24,7 +24,8 @@ public class PanelDrawing extends JPanel{
 		gunman = new ImageIcon(getClass().getResource(ConstantsUI.GUNMAN_IMG)).getImage();
 		background = new ImageIcon(getClass().getResource(ConstantsUI.BACK_IMAGE)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
-//		pasive = new ImageIcon(getClass().getResource(ConstantsUI.PASSIVE_SHOOT)).getImage();
+		pasive = new ImageIcon(getClass().getResource(ConstantsUI.PASSIVE_SHOOT)).getImage();
+		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
 		this.addKeyListener(controller);
 	}
 
@@ -44,13 +45,13 @@ public class PanelDrawing extends JPanel{
 	private void paintHabilities(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.setFont(ConstantsUI.FONT_GAME);
-		g.drawString("Habilities: " + game.getLife(), (getWidth()/5), 15);
+		g.drawString("Habilities: ", (getWidth()/5), 15);
 		g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
 		g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
-//		g.drawImage(pasive, (getWidth()/4), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-//		g.drawString("R" + game.getLife(), (getWidth()/4), POSITION_Y_STRING);
-//		g.drawImage(ulti, (getWidth()/3), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-//		g.drawString("T" + game.getLife(), (getWidth()/3), POSITION_Y_STRING);
+		g.drawImage(pasive, (getWidth()/4), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.drawString("R", (getWidth()/4)+12, POSITION_Y_STRING);
+		g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
 	}
 
 	private void paintLife(Graphics g) {

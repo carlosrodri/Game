@@ -11,9 +11,9 @@ public class ConstantsUI {
 	public static final String PATH = "src/persistence/datas";
 	public static final String BACK_IMAGE = "/img/fondo.jpg";
 	public static final String BASIC_SHOOT = "/img/basic.png";
-	public static final String PASSIVE_SHOOT = "/img/pasive.png";
+	public static final String PASSIVE_SHOOT = "/img/healing.png";
 	public static final String RIVAL_SHOOT_IMG = "/img/rivalShoot.png";
-	public static final String ULTI_SHOOT = "/img/ulti.jpg";
+	public static final String ULTI_SHOOT = "/img/fire.png";
 	public static final int SIZE_BASIC = 20;
 	public static final int SIZE_ICON_HABILITY = 35;
 	public static final Font FONT_GAME = new Font("Comic Sans Ms", Font.BOLD, 16);

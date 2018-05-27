@@ -37,6 +37,13 @@ public class Controller implements KeyListener{
 		timer.start();
 		//		jsonFileManager.setEnemyListDao(game.getEnemyList());
 
+		timerActions = new Timer(10, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				manageActions();
+			}
+		});
+		timerActions.start();
 	}
 
 	private void validateLoad() {
@@ -71,15 +78,8 @@ public class Controller implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode() + "   obtine las entradas del teclado");
+//		System.out.println(e.getKeyCode() + "   obtine las entradas del teclado");
 		actions.enqueue(new NodeList<Integer>(e.getKeyCode()));
-		timerActions = new Timer(10, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				manageActions();
-			}
-		});
-		timerActions.start();
 	}
 
 
