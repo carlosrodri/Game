@@ -98,7 +98,7 @@ public class Game extends MyThread{
 			break;
 		case KeyEvent.VK_R:
 			life += 5;
-//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 10, 10), Hability.PASIVE, 12, ConstantsUI.PASSIVE_SHOOT));
+			//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 10, 10), Hability.PASIVE, 12, ConstantsUI.PASSIVE_SHOOT));
 			break;
 		case KeyEvent.VK_T:
 			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 10, 10), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
