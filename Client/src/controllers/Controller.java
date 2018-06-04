@@ -9,6 +9,7 @@ import javax.swing.Timer;
 import models.dao.Game;
 import structures.NodeList;
 import structures.Queue;
+import views.DialogAvatar;
 import views.DialogInstructions;
 import views.DialogLoggin;
 import views.DialogMoreInfo;
@@ -16,6 +17,7 @@ import views.MainWindow;
 
 public class Controller implements KeyListener, ActionListener{
 	private Game game;
+	private DialogAvatar dialogAvatar;
 	private MainWindow mainWindow;
 	private Timer timer;
 	private Queue<Integer> actions;
@@ -32,19 +34,22 @@ public class Controller implements KeyListener, ActionListener{
 		dialogLoggin = new DialogLoggin(this);
 		dialogInstructions = new DialogInstructions();
 		dialogMoreInfo = new DialogMoreInfo();
+		dialogAvatar = new DialogAvatar(this);
 	}
 
 	private void validateLoad() {
 		int option = JOptionPane.showConfirmDialog(null, "do you want load the game?");
 		if(option != 1) {
-			game = new Game(200, 0, 0);
-			//				game.setEnemyList(jsonFileManager.readFile());
+			System.out.println(dialogAvatar.getHero()+"   heroo");
 			mainWindow = new MainWindow(this);
+			game = new Game(200, 0, 0, dialogAvatar.getHero());
+			//				game.setEnemyList(jsonFileManager.readFile());
 			game.setDimensions(mainWindow.getWidth(), mainWindow.getHeight());
 			mainWindow.setGame(game);
 		}else {
+			System.out.println(dialogAvatar.getHero()+"   heroo");
 			mainWindow = new MainWindow(this);
-			game = new Game(200, mainWindow.getWidth(), mainWindow.getHeight());
+			game = new Game(200, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero());
 			game.addEnenmy();
 			mainWindow.setGame(game);
 		}
@@ -146,6 +151,11 @@ public class Controller implements KeyListener, ActionListener{
 		case PLAY:
 			play();
 			break;
+		case CHOOSE:
+			dialogAvatar.setVisible(false);
+			validateLoad();
+			initGame();
+			break;
 		}
 	}
 
@@ -178,8 +188,7 @@ public class Controller implements KeyListener, ActionListener{
 	}
 
 	private void play() {
+		dialogAvatar.setVisible(true);
 		dialogLoggin.setVisible(false);
-		validateLoad();
-		initGame();
 	}
 }

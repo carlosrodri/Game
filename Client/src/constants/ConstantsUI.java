@@ -12,13 +12,19 @@ public class ConstantsUI {
 	public static final String GUNMAN_IMG = "/img/gunman.png";
 	public static final String PATH = "src/persistence/datas";
 	public static final String BACK_IMAGE = "/img/fondo.jpg";
+	public static final String LEVEL1 = "/img/fondo.jpg";
+	public static final String LEVEL2 = "/img/level2.jpg";
+	public static final String LEVEL3 = "/img/level3.jpg";
+	public static final String LEVEL4 = "/img/level4.jpg";
 	public static final String BASIC_SHOOT = "/img/basic.png";
 	public static final String PASSIVE_SHOOT = "/img/healing.png";
-	public static final String RIVAL_SHOOT_IMG = "/img/rivalShoot.png";
+	public static final String RIVAL_SHOOT_IMG = "/img/fornix.png";
 	public static final String ULTI_SHOOT = "/img/fire.png";
+	public static final String CAP = "/img/capitan.png";;
 	public static final int SIZE_BASIC = 20;
 	public static final int SIZE_ICON_HABILITY = 35;
 	public static final Font FONT_GAME = new Font("Comic Sans Ms", Font.BOLD, 16);
+	public static final Dimension DIMENSION_AVATAR_DIALOG = new Dimension(780, 600);
 	public static final Dimension DIMENSION_DIALOG_INIT = new Dimension(600, 500);
 	public static final Dimension DIMENSION_DIALOG_INIT_I = new Dimension(350, 500);
 	public static final Color BACKGROUND_COLOR = Color.decode("#fffff");
@@ -62,5 +68,12 @@ public class ConstantsUI {
 													+ "<br>"
 													+ "Developed by Carlos Rodriguez chr </html>";
 	public static final String HABILITIES_TEXT = "Abilities";
+	public static final String CHOOSE_HERO = "Choose a hero";
+	public static final String ACCEPT = "Accept";
+	public static final String SPIDER = "/img/spiderman.png";
+	public static final String HULK = "/img/hulk.png";
+	public static final String GROOT = "/img/groot.png";
+	public static final String POOL = "/img/deadpool.png";
+	public static final String LATERN = "/img/greenlatern.png";
 	
 }

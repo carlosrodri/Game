@@ -21,8 +21,6 @@ public class PanelDrawing extends JPanel{
 
 	public PanelDrawing(Controller controller) {
 		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
-		gunman = new ImageIcon(getClass().getResource(ConstantsUI.GUNMAN_IMG)).getImage();
-		background = new ImageIcon(getClass().getResource(ConstantsUI.BACK_IMAGE)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
 		pasive = new ImageIcon(getClass().getResource(ConstantsUI.PASSIVE_SHOOT)).getImage();
 		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
@@ -31,6 +29,7 @@ public class PanelDrawing extends JPanel{
 
 	@Override
 	public void paint(Graphics g) {
+		background = new ImageIcon(getClass().getResource(game.getBackground())).getImage();
 		super.paint(g);
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(game != null) {
@@ -79,7 +78,6 @@ public class PanelDrawing extends JPanel{
 	}
 
 	public void paintEnemy(Graphics g) {
-		g.setColor(Color.BLUE);
 		if(game.getEnemyList() != null && game.getEnemyList().size() != 0) {
 			for (Rectangle rectangle : game.getEnemyList()) {
 				g.drawImage(enemy,(int)rectangle.getX(), (int)rectangle.getY(), (int)rectangle.getWidth(), (int)rectangle.getHeight(), this);
@@ -89,5 +87,7 @@ public class PanelDrawing extends JPanel{
 
 	public void setGame(Game game) {
 		this.game = game;
+		gunman = new ImageIcon(getClass().getResource(game.getAvatar())).getImage();
+		background = new ImageIcon(getClass().getResource(game.getBackground())).getImage();
 	}
 }
