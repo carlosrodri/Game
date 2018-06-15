@@ -4,9 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import models.dao.Game;
+import network.Player;
 import structures.NodeList;
 import structures.Queue;
 import views.DialogAvatar;
@@ -16,7 +17,7 @@ import views.DialogMoreInfo;
 import views.MainWindow;
 
 public class Controller implements KeyListener, ActionListener{
-	private Game game;
+	private Player player;
 	private DialogAvatar dialogAvatar;
 	private MainWindow mainWindow;
 	private Timer timer;
@@ -25,11 +26,8 @@ public class Controller implements KeyListener, ActionListener{
 	private DialogLoggin dialogLoggin;
 	private DialogInstructions dialogInstructions;
 	private DialogMoreInfo dialogMoreInfo;
-	//	private JSONFileManager jsonFileManager;
 
 	public Controller() {
-		//		jsonFileManager = new JSONFileManager(10000);
-		//		jsonFileManager.start();
 		actions = new Queue<>();
 		dialogLoggin = new DialogLoggin(this);
 		dialogInstructions = new DialogInstructions();
@@ -37,26 +35,15 @@ public class Controller implements KeyListener, ActionListener{
 		dialogAvatar = new DialogAvatar(this);
 	}
 
-	private void validateLoad() {
-//		int option = JOptionPane.showConfirmDialog(null, "do you want load the game?");
-//		if(option != 1) {
-//			System.out.println(dialogAvatar.getHero()+"   heroo");
-//			mainWindow = new MainWindow(this);
-//			game = new Game(200, 0, 0, dialogAvatar.getHero());
-//			//				game.setEnemyList(jsonFileManager.readFile());
-//			game.setDimensions(mainWindow.getWidth(), mainWindow.getHeight());
-//			mainWindow.setGame(game);
-//		}else {
-			System.out.println(dialogAvatar.getHero()+"   heroo");
+	private void validateLoad() throws IOException {
 			mainWindow = new MainWindow(this);
-			game = new Game(100, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero());
-			game.addEnenmy();
-			mainWindow.setGame(game);
-//		}
+			player = new Player(200, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero(), mainWindow.getIP(),
+					mainWindow.getPort(), mainWindow.getPlayerName());
+			player.addEnenmy();
 	}
 
 	private void initGame() {
-		game.start();
+		player.start();
 		timer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -65,8 +52,6 @@ public class Controller implements KeyListener, ActionListener{
 			}
 		});
 		timer.start();
-		//		jsonFileManager.setEnemyListDao(game.getEnemyList());
-
 		timerActions = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,14 +62,14 @@ public class Controller implements KeyListener, ActionListener{
 	}
 
 	private void validate() {
-		game.validate();
-		if(game.validateLevel()) {
-			game.pause();
+		player.validate();
+		if(player.validateLevel()) {
+			player.pause();
 			JOptionPane.showMessageDialog(null, "Next Level");
-			game.addEnenmy();
-			game.resume();
+			player.addEnenmy();
+			player.resume();
 		}
-		if(game.validateLife()) {
+		if(player.validateLife()) {
 			JOptionPane.showMessageDialog(null, "you lose");
 			System.exit(0);
 		}
@@ -92,36 +77,31 @@ public class Controller implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//		System.out.println(e.getKeyCode() + "   obtine las entradas del teclado");
 		actions.enqueue(new NodeList<Integer>(e.getKeyCode()));
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//		System.out.println(e.getKeyCode() + "   released");
-		//		actions.enqueue(new NodeList<Integer>(e.getKeyCode()));
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		//		System.out.println(e.getKeyCode() + "   typed");
-		//		actions.enqueue(new NodeList<Integer>(e.getKeyCode()));
 	}
 
 	private void manageActions() {
 		if (!actions.isEmpty()) {
 			switch (actions.dequeue().getInformation()) {
 			case KeyEvent.VK_LEFT:
-				left();
+				manageMovement(KeyEvent.VK_LEFT);
 				break;
 			case KeyEvent.VK_RIGHT:
-				right();
+				manageMovement(KeyEvent.VK_RIGHT);
 				break;
 			case KeyEvent.VK_UP:
-				up();
+				manageMovement(KeyEvent.VK_UP);
 				break;
 			case KeyEvent.VK_DOWN:
-				down();
+				manageMovement(KeyEvent.VK_DOWN);
 				break;
 			case KeyEvent.VK_E:
 				shoot(KeyEvent.VK_E);
@@ -135,6 +115,7 @@ public class Controller implements KeyListener, ActionListener{
 			} 
 		}
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -153,30 +134,22 @@ public class Controller implements KeyListener, ActionListener{
 			break;
 		case CHOOSE:
 			dialogAvatar.setVisible(false);
-			validateLoad();
+			try {
+				validateLoad();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			initGame();
 			break;
 		}
 	}
+	
+	private void manageMovement(int action) {
+		player.manageMovement(action);
+	}
 
 	private void shoot(int key) {
-		game.manageShoot(key);
-	}
-
-	private void down() {
-		game.moveDown();
-	}
-
-	private void up() {
-		game.moveUp();
-	}
-
-	private void right() {
-		game.moveRigth();
-	}
-
-	private void left() {
-		game.moveleft();
+		player.manageShoot(key);
 	}
 
 	private void moreInfo() {

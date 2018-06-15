@@ -1,4 +1,4 @@
-package network;
+package models;
 
 public abstract class MyThread implements Runnable{
 

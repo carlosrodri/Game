@@ -1,7 +1,11 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import controllers.Controller;
 import models.dao.Game;
 
@@ -23,7 +27,19 @@ public class MainWindow extends JFrame{
 		this.repaint();
 	}
 
-	public void setGame(Game game) {
-		panelDrawing.setGame(game);
+	public void setGame(ArrayList<Game> gameList) {
+		panelDrawing.setGame(gameList);
+	}
+
+	public String getIP() {
+		return JOptionPane.showInputDialog("IP");
+	}
+
+	public int getPort() {
+		return Integer.parseInt(JOptionPane.showInputDialog("Port"));
+	}
+	
+	public String getPlayerName() {
+		return JOptionPane.showInputDialog("Name");
 	}
 }

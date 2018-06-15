@@ -1,31 +1,24 @@
 package persistence;
 
-import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import constants.ConstantsUI;
-import models.dao.MyThread;
+import models.dao.Game;
 
-
-public class JSONFileManager extends MyThread{
-	private List<Rectangle> enemyListDao;
+public class JSONFileManager{
 
 
 	public JSONFileManager(int sleep) {
-		super(sleep);
 	}
 
-	public List<Rectangle> readFile() throws FileNotFoundException, IOException{
+	public ArrayList<Game> readFile() throws FileNotFoundException, IOException{
 		JSONParser parser = new JSONParser();  
 		Object obj = null;
 		try {
@@ -34,62 +27,48 @@ public class JSONFileManager extends MyThread{
 			e.printStackTrace();
 		}  
 		JSONArray listJSON = (JSONArray) obj;
-		List<Rectangle> list = new ArrayList<>();
+		ArrayList<Game> list = new ArrayList<>();
 		for (Object object : listJSON) {
 			JSONObject objCyclist = new JSONObject();
 
 			objCyclist = (JSONObject) object;
 
-			JSONObject o = (JSONObject) objCyclist.get("Enemy");
+			JSONObject o = (JSONObject) objCyclist.get("Game");
 
-			list.add(new Rectangle((int)Double.parseDouble(o.get("x").toString()), (int)Double.parseDouble(o.get("y").toString()), 
-					(int)Double.parseDouble(o.get("width").toString()), (int)Double.parseDouble(o.get("heigth").toString())));
+			list.add(new Game(Integer.parseInt(o.get("time").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
+					o.get("avatar").toString()));
 		}
 		return list;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void writeFile(String path, List<Rectangle> enemyListDao) {
+	public void writeFile(String path, ArrayList<Game> gameList) {
 		JSONObject obj = null;
 
 		JSONObject topObj = null;
 
 		JSONArray enemyList = new JSONArray();
 		if(enemyList != null) {
-			for (Rectangle enemy : enemyListDao) {
+			for (Game game : gameList) {
 				obj = new JSONObject();
 				topObj = new JSONObject();
-				topObj.put("x", (int)enemy.getX());
-				topObj.put("y", (int)enemy.getY());
-				topObj.put("width", enemy.getWidth());
-				topObj.put("heigth", enemy.getHeight());
-
-				obj.put("Enemy", topObj);
+				topObj.put("time", (int)game.getSleep());
+				topObj.put("x", (int)game.getX());
+				topObj.put("y", game.getY());
+				topObj.put("avatar", game.getAvatar());
+				
+				obj.put("Game", topObj);
 
 				enemyList.add(obj);
 			}
 		}
 
 		try {
-
 			FileWriter file = new FileWriter(path + ".json", false);
 			file.write(enemyList.toJSONString());
 			file.flush();
 			file.close();
-
-
 		} catch (IOException e) {
 		}
-	}
-
-	@Override
-	public void executeTask() {
-		if(enemyListDao != null) {
-		writeFile(ConstantsUI.PATH, enemyListDao);
-		}
-	}
-
-	public void setEnemyListDao(List<Rectangle> enemyListDao) {
-		this.enemyListDao = enemyListDao;
 	}
 }
