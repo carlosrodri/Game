@@ -19,7 +19,7 @@ public class Game extends MyThread{
 	private List<Rectangle> enemyList;
 	private List<Shoot> shootList;
 	private String avatar;
-	private int x, y;
+	private int x, y, count;
 	private int life, level;
 	private Timer timer;
 	private String background;
@@ -138,20 +138,12 @@ public class Game extends MyThread{
 			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
 					ConstantsUI.SIZE_BASIC), Hability.BASIC, 20, ConstantsUI.BASIC_SHOOT));
 			break;
-		case KeyEvent.VK_R:
-			manageLife();
-			break;
 		case KeyEvent.VK_T:
 			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
 			break;
 		}
 	}
 
-	private void manageLife() {
-		if(life < 100) {
-			life += 5;
-		}
-	}
 
 	public List<Rectangle> getEnemyList(){
 		return enemyList;
@@ -171,9 +163,21 @@ public class Game extends MyThread{
 			for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
 				Rectangle e = enemy.next();
 				if(s.getRectangle().intersects(e) && e.getWidth() == 50) {
+					if(e.getWidth() != 200) {
 					enemy.remove();
+					}else {
+						validateBoss(enemy);
+					}
 				}
 			}
+		}
+	}
+
+	private void validateBoss(Iterator<Rectangle> enemy) {
+		count ++;
+		if(count == 10) {
+			enemy.remove();
+			count = 0;
 		}
 	}
 
@@ -181,7 +185,6 @@ public class Game extends MyThread{
 		for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
 			Rectangle e = enemy.next();
 			if(player.intersects(e)) {
-				enemy.remove();
 				quitLife();
 			}
 		}

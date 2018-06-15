@@ -15,15 +15,15 @@ public class PanelDrawing extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private Game game;
-	private Image enemy, gunman, background, pasive, ulti, basic;
+	private Image enemy, gunman, background, ulti, basic, enemyKing;
 	private final int POSITION_Y_STRING = 73;
 	private final int POSITION_Y_HABILITY = 30;
 
 	public PanelDrawing(Controller controller) {
 		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
-		pasive = new ImageIcon(getClass().getResource(ConstantsUI.PASSIVE_SHOOT)).getImage();
 		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
+		enemyKing = new ImageIcon(getClass().getResource(ConstantsUI.BOSS_IMG)).getImage();
 		this.addKeyListener(controller);
 	}
 
@@ -47,8 +47,6 @@ public class PanelDrawing extends JPanel{
 		g.drawString("Habilities: ", (getWidth()/5), 15);
 		g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
 		g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
-		g.drawImage(pasive, (getWidth()/4), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-		g.drawString("R", (getWidth()/4)+12, POSITION_Y_STRING);
 		g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
 		g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
 	}
@@ -80,7 +78,11 @@ public class PanelDrawing extends JPanel{
 	public void paintEnemy(Graphics g) {
 		if(game.getEnemyList() != null && game.getEnemyList().size() != 0) {
 			for (Rectangle rectangle : game.getEnemyList()) {
-				g.drawImage(enemy,(int)rectangle.getX(), (int)rectangle.getY(), (int)rectangle.getWidth(), (int)rectangle.getHeight(), this);
+				if(rectangle.getWidth() == 200) {
+				g.drawImage(enemyKing,(int)rectangle.getX(), (int)rectangle.getY(), (int)rectangle.getWidth(), (int)rectangle.getHeight(), this);
+				}else {
+					g.drawImage(enemy,(int)rectangle.getX(), (int)rectangle.getY(), (int)rectangle.getWidth(), (int)rectangle.getHeight(), this);
+				}
 			}
 		}
 	}

@@ -38,21 +38,21 @@ public class Controller implements KeyListener, ActionListener{
 	}
 
 	private void validateLoad() {
-		int option = JOptionPane.showConfirmDialog(null, "do you want load the game?");
-		if(option != 1) {
+//		int option = JOptionPane.showConfirmDialog(null, "do you want load the game?");
+//		if(option != 1) {
+//			System.out.println(dialogAvatar.getHero()+"   heroo");
+//			mainWindow = new MainWindow(this);
+//			game = new Game(200, 0, 0, dialogAvatar.getHero());
+//			//				game.setEnemyList(jsonFileManager.readFile());
+//			game.setDimensions(mainWindow.getWidth(), mainWindow.getHeight());
+//			mainWindow.setGame(game);
+//		}else {
 			System.out.println(dialogAvatar.getHero()+"   heroo");
 			mainWindow = new MainWindow(this);
-			game = new Game(200, 0, 0, dialogAvatar.getHero());
-			//				game.setEnemyList(jsonFileManager.readFile());
-			game.setDimensions(mainWindow.getWidth(), mainWindow.getHeight());
-			mainWindow.setGame(game);
-		}else {
-			System.out.println(dialogAvatar.getHero()+"   heroo");
-			mainWindow = new MainWindow(this);
-			game = new Game(200, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero());
+			game = new Game(100, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero());
 			game.addEnenmy();
 			mainWindow.setGame(game);
-		}
+//		}
 	}
 
 	private void initGame() {
