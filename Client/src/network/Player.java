@@ -14,7 +14,7 @@ public class Player extends Connection{
 	public Player(int sleep, int x, int y, String avatar, String ip, int port, String name) throws IOException{
 		super(ip, port);
 		this.name = name;
-		game = new Game(sleep, x, y, avatar);
+		game = new Game(sleep, x, y, avatar, name);
 		send(name);
 	}
 
@@ -64,6 +64,14 @@ public class Player extends Connection{
 
 	public void manageShoot(int key) {
 		game.manageShoot(key);
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void startGame() {
+		game.start();
 	}
 	
 }

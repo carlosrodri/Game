@@ -4,10 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+
+import constants.ConstantsNetwork;
+import constants.ConstantsUI;
 import network.Player;
+import persistence.JSONFileManager;
 import structures.NodeList;
 import structures.Queue;
 import views.DialogAvatar;
@@ -26,10 +31,12 @@ public class Controller implements KeyListener, ActionListener{
 	private DialogLoggin dialogLoggin;
 	private DialogInstructions dialogInstructions;
 	private DialogMoreInfo dialogMoreInfo;
+	private JSONFileManager fileManager;
 
 	public Controller() {
 		actions = new Queue<>();
 		dialogLoggin = new DialogLoggin(this);
+		fileManager = new JSONFileManager();
 		dialogInstructions = new DialogInstructions();
 		dialogMoreInfo = new DialogMoreInfo();
 		dialogAvatar = new DialogAvatar(this);
@@ -37,13 +44,19 @@ public class Controller implements KeyListener, ActionListener{
 
 	private void validateLoad() throws IOException {
 			mainWindow = new MainWindow(this);
-			player = new Player(200, mainWindow.getWidth(), mainWindow.getHeight(), dialogAvatar.getHero(), mainWindow.getIP(),
+			player = new Player(200, 300,400, dialogAvatar.getHero(), mainWindow.getIP(),
 					mainWindow.getPort(), mainWindow.getPlayerName());
 			player.addEnenmy();
+			player.send(ConstantsNetwork.GAME);
+			fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
+			player.sendFile(new File(ConstantsUI.PATH_SEND));
+			mainWindow.initPanelDrwaing();
+//			mainWindow.setGame(fileManager.readFile());
+			
 	}
 
 	private void initGame() {
-		player.start();
+		player.startGame();
 		timer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

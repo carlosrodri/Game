@@ -12,8 +12,6 @@ import java.util.List;
 import javax.swing.Timer;
 
 import constants.ConstantsUI;
-import models.dao.Hability;
-import models.dao.MyThread;
 
 public class Game extends MyThread{
 	private Rectangle player;

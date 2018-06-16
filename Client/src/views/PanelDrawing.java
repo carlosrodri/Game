@@ -30,10 +30,10 @@ public class PanelDrawing extends JPanel{
 
 	@Override
 	public void paint(Graphics g) {
-		background = new ImageIcon(getClass().getResource(gameList.get(0).getBackground())).getImage();
 		super.paint(g);
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(gameList != null) {
+			background = new ImageIcon(getClass().getResource(gameList.get(0).getBackground())).getImage();
 			for (Game game : gameList) {
 				paintPlayer(g, game);
 				paintEnemy(g, game);

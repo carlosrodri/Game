@@ -12,14 +12,14 @@ import models.entities.Game;
 public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private PanelDrawing panelDrawing;
+	private Controller controller;
 
 	public MainWindow(Controller controller) {
+		this.controller = controller;
 		this.addKeyListener(controller);
 		setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		panelDrawing = new PanelDrawing(controller);
-
-		add(panelDrawing, BorderLayout.CENTER);
+		
 		setVisible(true);
 	}
 
@@ -31,6 +31,11 @@ public class MainWindow extends JFrame{
 		panelDrawing.setGame(gameList);
 	}
 
+	public void initPanelDrwaing() {
+		panelDrawing = new PanelDrawing(controller);
+		add(panelDrawing, BorderLayout.CENTER);
+	}
+	
 	public String getIP() {
 		return JOptionPane.showInputDialog("IP");
 	}

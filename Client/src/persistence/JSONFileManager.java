@@ -15,60 +15,47 @@ import models.entities.Game;
 public class JSONFileManager{
 
 
-	public JSONFileManager(int sleep) {
+	public JSONFileManager() {
 	}
 
-	public ArrayList<Game> readFile() throws FileNotFoundException, IOException{
-		JSONParser parser = new JSONParser();  
-		Object obj = null;
-		try {
-			obj = parser.parse(new FileReader(ConstantsUI.PATH+".json"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}  
-		JSONArray listJSON = (JSONArray) obj;
-		ArrayList<Game> list = new ArrayList<>();
-		for (Object object : listJSON) {
-			JSONObject objCyclist = new JSONObject();
-
-			objCyclist = (JSONObject) object;
-
-			JSONObject o = (JSONObject) objCyclist.get("Game");
-
-			list.add(new Game(Integer.parseInt(o.get("time").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
-					o.get("avatar").toString()));
-		}
-		return list;
-	}
+//	public ArrayList<Game> readFile() throws FileNotFoundException, IOException{
+//		JSONParser parser = new JSONParser();  
+//		Object obj = null;
+//		try {
+//			obj = parser.parse(new FileReader(ConstantsUI.PATH));
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}  
+//		JSONArray listJSON = (JSONArray) obj;
+//		ArrayList<Game> list = new ArrayList<>();
+//		for (Object object : listJSON) {
+//			JSONObject objCyclist = new JSONObject();
+//
+//			objCyclist = (JSONObject) object;
+//
+//			JSONObject o = (JSONObject) objCyclist.get("Game");
+//
+//			list.add(new Game(Integer.parseInt(o.get("time").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
+//					o.get("avatar").toString(), o.get("name").toString()));
+//		}
+//		return list;
+//	}
 
 	@SuppressWarnings("unchecked")
-	public void writeFile(String path, ArrayList<Game> gameList) {
-		JSONObject obj = null;
-
-		JSONObject topObj = null;
-
-		JSONArray enemyList = new JSONArray();
-		if(enemyList != null) {
-			for (Game game : gameList) {
-				obj = new JSONObject();
-				topObj = new JSONObject();
-				topObj.put("time", (int)game.getSleep());
-				topObj.put("x", (int)game.getX());
-				topObj.put("y", game.getY());
-				topObj.put("avatar", game.getAvatar());
-				
-				obj.put("Game", topObj);
-
-				enemyList.add(obj);
-			}
+	public void writeFile(String path, Game game) throws IOException {
+		JSONObject object = new JSONObject();
+		
+		object.put("nombre", game.getName());
+		object.put("avatar", game.getAvatar());
+		object.put("x", new Integer(game.getX()));
+		object.put("y", new Integer(game.getY()));
+		object.put("sleep", new Integer(game.getSleep()));
+		
+		FileWriter writer = new FileWriter(path);
+		writer.write(object.toJSONString());
+		writer.flush();
+		writer.close();
 		}
 
-		try {
-			FileWriter file = new FileWriter(path + ".json", false);
-			file.write(enemyList.toJSONString());
-			file.flush();
-			file.close();
-		} catch (IOException e) {
-		}
-	}
+		
 }
