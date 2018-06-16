@@ -17,7 +17,7 @@ public class JSONFileManagerServer{
 
 
 	public JSONFileManagerServer() {
-		
+
 	}
 
 	public Game readGame() {
@@ -29,27 +29,43 @@ public class JSONFileManagerServer{
 			e.printStackTrace();
 		}
 		JSONObject o = (JSONObject) obj;
+
+		System.out.println(" ajajjajajaja");
+		System.out.println(" ajajjajajaj" + o.get("nombre"));
 		
-		return new Game(Integer.parseInt(o.get("sleep").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
+		Game g = new Game(Integer.parseInt(o.get("sleep").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
 				o.get("avatar").toString(),
 				o.get("nombre").toString());
+		
+		g.setLife(Integer.parseInt(o.get("life").toString()));
+		g.setBackground(o.get("background").toString());
+
+		return g;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void writeGameList(ArrayList<Game> gameList) throws IOException {
-		JSONObject object = new JSONObject();
+		
+		JSONArray array = new JSONArray();
+		JSONObject o  = new JSONObject();
 
+		System.out.println("escribe lista e el servidor para enviaarla");
+		
 		for (Game game : gameList) {
+			JSONObject object = new JSONObject();
+			object.put("sleep", new Integer(game.getSleep()));
 			object.put("nombre", game.getName());
 			object.put("avatar", game.getAvatar());
 			object.put("x", new Integer(game.getX()));
 			object.put("y", new Integer(game.getY()));
-			object.put("sleep", new Integer(game.getSleep()));
+			object.put("life", new Integer(game.getLife()));
+			object.put("background", game.getBackground());
+			o.put("player", object);
+			array.add(o);
 		}
-		
 
 		FileWriter writer = new FileWriter(ConstantsUI.PATH_FILE);
-		writer.write(object.toJSONString());
+		writer.write(array.toJSONString());
 		writer.flush();
 		writer.close();
 	}
@@ -60,14 +76,13 @@ public class JSONFileManagerServer{
 		JSONObject topObj = null;
 
 		JSONArray enemyList = new JSONArray();
-		if(enemyList != null) {
 			for (Game game : gameList) {
 				obj = new JSONObject();
 				topObj = new JSONObject();
 				topObj.put("name", game.getName());
-				topObj.put("avatar", game.getAvatar());
 				topObj.put("x", (int)game.getX());
 				topObj.put("y", (int)game.getY());
+				topObj.put("avatar", game.getAvatar());
 				JSONArray enemy = new JSONArray();
 				for (Rectangle rectangle : game.getEnemyList()) {
 					enemy.add(new JSONObject().put("x", rectangle.getX()));
@@ -85,7 +100,6 @@ public class JSONFileManagerServer{
 				obj.put("Player", topObj);
 
 				enemyList.add(obj);
-			}
 		}
 
 		try {
@@ -99,6 +113,4 @@ public class JSONFileManagerServer{
 		} catch (IOException e) {
 		}
 	}
-
-
 }

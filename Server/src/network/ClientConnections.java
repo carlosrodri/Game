@@ -3,24 +3,18 @@ package network;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
-
-import org.json.simple.parser.ParseException;
-
 import constants.ConstantsNetwork;
 import constants.ConstantsUI;
-import models.entities.Game;
 import persistence.JSONFileManagerServer;
 import utilities.MyUtilities;
 
 public class ClientConnections extends Connection{
 	private String name;
 	private MyUtilities myUtilities;
-	private JSONFileManagerServer fileManager;
+	private JSONFileManagerServer fileManagerServer;
 
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
-		myUtilities = new MyUtilities();
-		fileManager = new JSONFileManagerServer();
 	}
 
 	@Override
@@ -46,27 +40,7 @@ public class ClientConnections extends Connection{
 	}
 
 	private void game() {
-		try {
-			saveFile();
-			myUtilities.add
-			(fileManager.
-					readGame());
-			for (Game iterable_element : myUtilities.getGameList()) {
-				System.out.println(iterable_element.getAvatar() + "      avatarrrrrrrr");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		update();
-	}
-
-	private void update() {
-		try {
-			fileManager.writeGameList(myUtilities.getGameList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Server.sendMessageALL();
+		Server.game(this);
 	}
 
 	public void sendFile(){

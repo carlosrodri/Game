@@ -243,4 +243,12 @@ public class Game extends MyThread{
 	public String getName() {
 		return name;
 	}
+	
+	public void setLife(int life) {
+		this.life = life;
+	}
+	
+	public void setBackground(String background) {
+		this.background = background;
+	}
 }

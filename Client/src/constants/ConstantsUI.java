@@ -75,5 +75,6 @@ public class ConstantsUI {
 	public static final String GROOT = "/img/groot.png";
 	public static final String POOL = "/img/deadpool.png";
 	public static final String LATERN = "/img/greenlatern.png";
+	public static final String PATH = "src/persistence/file.json";
 	
 }

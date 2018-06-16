@@ -51,6 +51,7 @@ public class Controller implements KeyListener, ActionListener{
 			fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
 			player.sendFile(new File(ConstantsUI.PATH_SEND));
 			mainWindow.initPanelDrwaing();
+			player.setWindow(mainWindow, fileManager);
 //			mainWindow.setGame(fileManager.readFile());
 			
 	}

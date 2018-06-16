@@ -63,7 +63,7 @@ public abstract class Connection extends MyThread{
 	}
 
 	public void saveFile() throws IOException {
-		File fi = new File("datas/");
+		File fi = new File("src/persistence");
 		if(!fi.exists()) {
 			fi.mkdir();
 		}
@@ -71,7 +71,7 @@ public abstract class Connection extends MyThread{
 			setInput(new DataInputStream(getSocket().getInputStream()));
 			String nameFile = getInput().readUTF();
 			int tam = getInput().readInt();
-			File f = new File("datas/" + nameFile);
+			File f = new File("src/persistence/" + nameFile);
 			FileOutputStream fos = new FileOutputStream(f);
 			@SuppressWarnings("resource")
 			BufferedOutputStream out = new BufferedOutputStream(fos);

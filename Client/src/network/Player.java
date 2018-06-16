@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import constants.ConstantsNetwork;
 import models.entities.Game;
+import persistence.JSONFileManager;
+import views.MainWindow;
 
 public class Player extends Connection{
 
@@ -40,6 +42,7 @@ public class Player extends Connection{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void addEnenmy() {
@@ -73,5 +76,12 @@ public class Player extends Connection{
 	public void startGame() {
 		game.start();
 	}
-	
+
+	public void setWindow(MainWindow mainWindow, JSONFileManager fileManager) {
+		try {
+			mainWindow.setGame(fileManager.readFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

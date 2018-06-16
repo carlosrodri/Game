@@ -1,21 +1,27 @@
 package network;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 import constants.ConstantsNetwork;
+import persistence.JSONFileManagerServer;
+import utilities.MyUtilities;
 
 public class Server {
 
 	private ServerSocket serverSocket;
+	private static MyUtilities myUtilities;
+	private static JSONFileManagerServer fileManagerServer;
+	
 	public static ArrayList<ClientConnections> clientConnections;
 
 	public Server() throws IOException {
 		clientConnections = new ArrayList<>();
 		serverSocket = new ServerSocket(2001);
+		myUtilities = new MyUtilities();
+		fileManagerServer = new JSONFileManagerServer();
 		new Thread(){
 			@Override
 			public void run() {
@@ -58,14 +64,20 @@ public class Server {
 		}
 	}
 
-	private static String files(File file) {
-		String letter = "";
-		File[] f = file.listFiles();
-		for (int i = 0; i < f.length; i++) {
-			if(f[i].isFile()) {
-				letter += f[i].getName() + "#";
-			}
+	public static void game(ClientConnections clientConnections2) {
+		fileManagerServer = new JSONFileManagerServer();
+		try {
+			clientConnections2.saveFile();
+			myUtilities.add(fileManagerServer.readGame());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return letter;
+			try {
+				fileManagerServer.writeGameList(myUtilities.getGameList());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Server.sendMessageALL();
 	}
+
 }

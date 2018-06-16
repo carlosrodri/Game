@@ -89,5 +89,7 @@ public class PanelDrawing extends JPanel{
 	public void setGame(ArrayList<Game> gamelist) {
 		this.gameList = gamelist;
 		background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
+		System.out.println(gamelist.get(0).getBackground() + "sdfgfbdgbddfzvsd");
+		revalidate();
 	}
 }
