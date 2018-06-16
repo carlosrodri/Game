@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import constants.ConstantsUI;
 import controllers.Controller;
-import models.dao.Game;
+import models.entities.Game;
 import models.entities.Shoot;
 
 public class PanelDrawing extends JPanel{

@@ -4,7 +4,7 @@ package network;
 import java.io.IOException;
 
 import constants.ConstantsNetwork;
-import models.dao.Game;
+import models.entities.Game;
 
 public class Player extends Connection{
 

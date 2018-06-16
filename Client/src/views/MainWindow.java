@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import controllers.Controller;
-import models.dao.Game;
+import models.entities.Game;
 
 public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;

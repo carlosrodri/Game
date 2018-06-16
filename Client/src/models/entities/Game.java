@@ -1,4 +1,4 @@
-package models.dao;
+package models.entities;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -12,7 +12,8 @@ import java.util.List;
 import javax.swing.Timer;
 
 import constants.ConstantsUI;
-import models.entities.Shoot;
+import models.dao.Hability;
+import models.dao.MyThread;
 
 public class Game extends MyThread{
 	private Rectangle player;

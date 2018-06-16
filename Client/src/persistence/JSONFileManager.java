@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
-import models.dao.Game;
+import models.entities.Game;
 
 public class JSONFileManager{
 
