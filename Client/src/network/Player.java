@@ -1,6 +1,7 @@
 package network;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import constants.ConstantsNetwork;
@@ -12,6 +13,8 @@ public class Player extends Connection{
 
 	private String name;
 	private Game game;
+	private MainWindow mainWindow;
+	private JSONFileManager fileManager;
 
 	public Player(int sleep, int x, int y, String avatar, String ip, int port, String name) throws IOException{
 		super(ip, port);
@@ -33,7 +36,7 @@ public class Player extends Connection{
 	}
 
 	public String getName() {
-		return name;
+		return game.getName();
 	}
 	
 	private void readFile() {
@@ -42,7 +45,15 @@ public class Player extends Connection{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		try {
+			if(mainWindow != null && fileManager != null) {
+			mainWindow.setGame(fileManager.readFile());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addEnenmy() {
@@ -78,6 +89,8 @@ public class Player extends Connection{
 	}
 
 	public void setWindow(MainWindow mainWindow, JSONFileManager fileManager) {
+		this.mainWindow = mainWindow;
+		this.fileManager = fileManager;
 		try {
 			mainWindow.setGame(fileManager.readFile());
 		} catch (IOException e) {

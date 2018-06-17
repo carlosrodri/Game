@@ -41,6 +41,7 @@ public class JSONFileManager{
 					o.get("nombre").toString());
 			g.setLife(Integer.parseInt(o.get("life").toString()));
 			g.setBackground(o.get("background").toString());
+			g.setPosition(Integer.parseInt(o.get("posx").toString()), Integer.parseInt(o.get("y").toString()));
 			list.add(g);
 		}
 		return list;

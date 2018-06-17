@@ -29,9 +29,6 @@ public class JSONFileManagerServer{
 			e.printStackTrace();
 		}
 		JSONObject o = (JSONObject) obj;
-
-		System.out.println(" ajajjajajaja");
-		System.out.println(" ajajjajajaj" + o.get("nombre"));
 		
 		Game g = new Game(Integer.parseInt(o.get("sleep").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
 				o.get("avatar").toString(),
@@ -47,12 +44,13 @@ public class JSONFileManagerServer{
 	public void writeGameList(ArrayList<Game> gameList) throws IOException {
 		
 		JSONArray array = new JSONArray();
-		JSONObject o  = new JSONObject();
 
 		System.out.println("escribe lista e el servidor para enviaarla");
 		
 		for (Game game : gameList) {
 			JSONObject object = new JSONObject();
+			JSONObject o  = new JSONObject();
+			System.out.println(game.getX() + "    avatar      al escribir en server");
 			object.put("sleep", new Integer(game.getSleep()));
 			object.put("nombre", game.getName());
 			object.put("avatar", game.getAvatar());
@@ -60,11 +58,13 @@ public class JSONFileManagerServer{
 			object.put("y", new Integer(game.getY()));
 			object.put("life", new Integer(game.getLife()));
 			object.put("background", game.getBackground());
+			object.put("posx", new Integer((int) game.getPlayer().getX()));
+			object.put("posy", new Integer((int) game.getPlayer().getY()));
 			o.put("player", object);
 			array.add(o);
 		}
 
-		FileWriter writer = new FileWriter(ConstantsUI.PATH_FILE);
+		FileWriter writer = new FileWriter(ConstantsUI.PATH_FILE, false);
 		writer.write(array.toJSONString());
 		writer.flush();
 		writer.close();

@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import constants.ConstantsNetwork;
+import models.entities.Game;
 import persistence.JSONFileManagerServer;
 import utilities.MyUtilities;
 
@@ -43,7 +44,8 @@ public class Server {
 		return clientConnections;
 	}
 
-	public static void sendMessageALL(){
+	public static void sendMessageALL() throws IOException{
+		fileManagerServer.writeGameList(myUtilities.getGameList());
 		for (ClientConnections clientConnections2 : clientConnections) {
 			try {
 				if (clientConnections2.getSocket().isConnected()) {
@@ -73,11 +75,14 @@ public class Server {
 			e.printStackTrace();
 		}
 			try {
-				fileManagerServer.writeGameList(myUtilities.getGameList());
+				sendMessageALL();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			Server.sendMessageALL();
 	}
 
+	public static ArrayList<Game> getList(){
+		return myUtilities.getGameList();
+	}
+	
 }

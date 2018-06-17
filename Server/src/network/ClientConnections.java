@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.net.Socket;
 import constants.ConstantsNetwork;
 import constants.ConstantsUI;
-import persistence.JSONFileManagerServer;
+import models.entities.Game;
 import utilities.MyUtilities;
 
 public class ClientConnections extends Connection{
 	private String name;
-	private MyUtilities myUtilities;
-	private JSONFileManagerServer fileManagerServer;
 
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
@@ -29,13 +27,23 @@ public class ClientConnections extends Connection{
 //				game();
 				break;
 			case ConstantsNetwork.MOVEMENT:
-//				game();
+				movement();
 				break;
 			default:
 				this.name = option;
 				break;
 			}
 		} catch (IOException e) {
+		}
+	}
+
+	private void movement() throws IOException {
+		for (Game game : Server.getList()) {
+			if(game.getName().equals(readResquest())) {
+				System.out.println(" accion encoladaddadada");
+				game.manageMovement(readRequestInt());
+				Server.sendMessageALL();
+			}
 		}
 	}
 

@@ -251,4 +251,8 @@ public class Game extends MyThread{
 	public void setBackground(String background) {
 		this.background = background;
 	}
+	
+	public void setPosition(int x, int y) {
+		player.setLocation(x, y);
+	}
 }

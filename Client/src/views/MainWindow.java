@@ -24,6 +24,8 @@ public class MainWindow extends JFrame{
 	}
 
 	public void paint() {
+		panelDrawing.repaint();
+		panelDrawing.revalidate();
 		this.repaint();
 	}
 

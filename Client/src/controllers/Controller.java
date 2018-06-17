@@ -69,7 +69,12 @@ public class Controller implements KeyListener, ActionListener{
 		timerActions = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				manageActions();
+				try {
+					manageActions();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		timerActions.start();
@@ -91,6 +96,7 @@ public class Controller implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println(e.getKeyCode() + "      codigo de la tecla     ");
 		actions.enqueue(new NodeList<Integer>(e.getKeyCode()));
 	}
 
@@ -102,7 +108,7 @@ public class Controller implements KeyListener, ActionListener{
 	public void keyTyped(KeyEvent e) {
 	}
 
-	private void manageActions() {
+	private void manageActions() throws IOException {
 		if (!actions.isEmpty()) {
 			switch (actions.dequeue().getInformation()) {
 			case KeyEvent.VK_LEFT:
@@ -150,16 +156,18 @@ public class Controller implements KeyListener, ActionListener{
 			dialogAvatar.setVisible(false);
 			try {
 				validateLoad();
+				initGame();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			initGame();
 			break;
 		}
 	}
 	
-	private void manageMovement(int action) {
-		player.manageMovement(action);
+	private void manageMovement(int action) throws IOException {
+		player.send(ConstantsNetwork.MOVEMENT);
+		player.send(player.getName());
+		player.sendInt(action);
 	}
 
 	private void shoot(int key) {

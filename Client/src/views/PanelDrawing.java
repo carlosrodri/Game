@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import constants.ConstantsUI;
@@ -34,32 +33,38 @@ public class PanelDrawing extends JPanel{
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(gameList != null) {
 			background = new ImageIcon(getClass().getResource(gameList.get(0).getBackground())).getImage();
+			int n = 0;
 			for (Game game : gameList) {
 				paintPlayer(g, game);
 				paintEnemy(g, game);
-				paintShoot(g, game);
-				paintLife(g, game);
-				paintHabilities(g);
+				paintShoot(g, game, n);
+				paintLife(g, game, n);
+				paintHabilities(g, n);
+				n++;
 			}
 		}
 	}
 
-	private void paintHabilities(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.setFont(ConstantsUI.FONT_GAME);
-		g.drawString("Habilities: ", (getWidth()/5), 15);
-		g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-		g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
-		g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-		g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
+	private void paintHabilities(Graphics g, int n) {
+		if(n == 0) {
+			g.setColor(Color.WHITE);
+			g.setFont(ConstantsUI.FONT_GAME);
+			g.drawString("Habilities: ", (getWidth()/5), 15);
+			g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+			g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
+			g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+			g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
+		}
 	}
 
-	private void paintLife(Graphics g, Game game) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(getWidth()/2, 25, game.getLife(), 20);
-		g.drawRect(getWidth()/2, 25, 100, 20);
-		g.setColor(Color.BLACK);
-		g.drawString("LIFE: " + game.getLife(), (getWidth()/2)+25, 40);
+	private void paintLife(Graphics g, Game game, int n) {
+		if(n == 0) {
+			g.setColor(Color.YELLOW);
+			g.fillRect(getWidth()/2, 25, game.getLife(), 20);
+			g.drawRect(getWidth()/2, 25, 100, 20);
+			g.setColor(Color.BLACK);
+			g.drawString("LIFE: " + game.getLife(), (getWidth()/2)+25, 40);
+		}
 	}
 
 	private void paintPlayer(Graphics g, Game game) {
@@ -67,13 +72,15 @@ public class PanelDrawing extends JPanel{
 				(int)game.getPlayer().getHeight(), this);
 	}
 
-	private void paintShoot(Graphics g, Game game) {
-		g.setColor(Color.RED);
-		if(game.getList() != null && game.getList().size() != 0) {
-			for (Shoot shoot : game.getList()) {
-				g.drawImage(new ImageIcon(getClass().getResource(shoot.getImage())).getImage(),
-						(int)shoot.getRectangle().getX(), (int)shoot.getRectangle().getY(), 
-						(int)shoot.getRectangle().getWidth(), (int)shoot.getRectangle().getHeight(), this);
+	private void paintShoot(Graphics g, Game game, int n) {
+		if(n == 0) {
+			g.setColor(Color.RED);
+			if(game.getList() != null && game.getList().size() != 0) {
+				for (Shoot shoot : game.getList()) {
+					g.drawImage(new ImageIcon(getClass().getResource(shoot.getImage())).getImage(),
+							(int)shoot.getRectangle().getX(), (int)shoot.getRectangle().getY(), 
+							(int)shoot.getRectangle().getWidth(), (int)shoot.getRectangle().getHeight(), this);
+				}
 			}
 		}
 	}

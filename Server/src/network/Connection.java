@@ -89,6 +89,10 @@ public abstract class Connection extends MyThread{
 		return input.readUTF();
 	}
 	
+	public int readRequestInt() throws IOException {
+		return input.readInt();
+	}
+	
 	public DataInputStream getInput() {
 		return input;
 	}
