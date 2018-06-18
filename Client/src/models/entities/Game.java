@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,8 @@ import javax.swing.Timer;
 import constants.ConstantsUI;
 import models.dao.Hability;
 import models.dao.MyThread;
+import structures.NodeList;
+import structures.Queue;
 
 public class Game extends MyThread{
 	private Rectangle player;
@@ -26,6 +29,7 @@ public class Game extends MyThread{
 	private String background;
 	private String name;
 	private int sleep;
+	private Queue<Integer> actions;
 
 	public Game(int sleep, int x, int y, String avatar, String name) {
 		super(sleep);
@@ -39,12 +43,18 @@ public class Game extends MyThread{
 		enemyList = new ArrayList<>();
 		life = 100;
 		level = 1;
+		actions = new Queue<>();
 
-		timer = new Timer(1000, new ActionListener() {
-
+		timer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				paintEnemy();
+				try {
+					manageActions();
+					paintShoot();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		timer.start();
@@ -68,7 +78,12 @@ public class Game extends MyThread{
 
 	@Override
 	public void executeTask() {
-		paintShoot();
+		try {
+			manageActions();
+			paintEnemy();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void paintEnemy() {
@@ -256,5 +271,46 @@ public class Game extends MyThread{
 	
 	public void setPosition(int x, int y) {
 		player.setLocation(x, y);
+	}
+
+	public void enqueueActions(int keyCode) {
+		actions.enqueue(new NodeList<Integer>(keyCode));
+	}
+	
+	private void manageActions() throws IOException {
+		if (!actions.isEmpty()) {
+			switch (actions.dequeue().getInformation()) {
+			case KeyEvent.VK_LEFT:
+				manageMovement(KeyEvent.VK_LEFT);
+				break;
+			case KeyEvent.VK_RIGHT:
+				manageMovement(KeyEvent.VK_RIGHT);
+				break;
+			case KeyEvent.VK_UP:
+				manageMovement(KeyEvent.VK_UP);
+				break;
+			case KeyEvent.VK_DOWN:
+				manageMovement(KeyEvent.VK_DOWN);
+				break;
+			case KeyEvent.VK_E:
+				manageShoot(KeyEvent.VK_E);
+				break;
+			case KeyEvent.VK_T:
+				manageShoot(KeyEvent.VK_T);
+				break;
+			} 
+		}else {
+			actions.clear();
+		}
+	}
+	
+	public void enqueue(ArrayList<Integer> list) {
+		for (Integer integer : list) {
+			actions.enqueue(new NodeList<Integer>(integer));
+		}
+	}
+	
+	public Queue<Integer> getActions(){
+		return actions;
 	}
 }

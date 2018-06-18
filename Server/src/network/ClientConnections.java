@@ -1,18 +1,37 @@
 package network;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+
+import javax.swing.Timer;
+
 import constants.ConstantsNetwork;
 import constants.ConstantsUI;
 import models.entities.Game;
-import utilities.MyUtilities;
 
 public class ClientConnections extends Connection{
 	private String name;
+	private Timer timer;
 
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
+		timer = new Timer(50, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if(Server.isState()) {
+						Server.sendMessageALL();
+						Server.setState(false);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		timer.start();
 	}
 
 	@Override
@@ -23,11 +42,8 @@ public class ClientConnections extends Connection{
 			case ConstantsNetwork.GAME:
 				game();
 				break;
-			case ConstantsNetwork.SHOOT:
-//				game();
-				break;
 			case ConstantsNetwork.MOVEMENT:
-				movement();
+				enqueue();
 				break;
 			default:
 				this.name = option;
@@ -37,12 +53,14 @@ public class ClientConnections extends Connection{
 		}
 	}
 
-	private void movement() throws IOException {
+	private void enqueue() throws IOException {
+		Server.setState(true);
+		String name = readResquest();
+		int action = readRequestInt();
 		for (Game game : Server.getList()) {
-			if(game.getName().equals(readResquest())) {
-				System.out.println(" accion encoladaddadada");
-				game.manageMovement(readRequestInt());
-				Server.sendMessageALL();
+			if(game.getName().equals(name)) {
+				System.out.println(" accion encoladaddadada" + "    nombre del man  " + name + "actionnn   " + action);
+				game.enqueueActions(action);
 			}
 		}
 	}

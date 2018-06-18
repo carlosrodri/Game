@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
 import models.entities.Game;
 import models.entities.Shoot;
+import structures.NodeList;
 
 public class JSONFileManagerServer{
 
@@ -44,13 +45,10 @@ public class JSONFileManagerServer{
 	public void writeGameList(ArrayList<Game> gameList) throws IOException {
 		
 		JSONArray array = new JSONArray();
-
-		System.out.println("escribe lista e el servidor para enviaarla");
 		
 		for (Game game : gameList) {
 			JSONObject object = new JSONObject();
 			JSONObject o  = new JSONObject();
-			System.out.println(game.getX() + "    avatar      al escribir en server");
 			object.put("sleep", new Integer(game.getSleep()));
 			object.put("nombre", game.getName());
 			object.put("avatar", game.getAvatar());
@@ -60,6 +58,15 @@ public class JSONFileManagerServer{
 			object.put("background", game.getBackground());
 			object.put("posx", new Integer((int) game.getPlayer().getX()));
 			object.put("posy", new Integer((int) game.getPlayer().getY()));
+			NodeList<Integer> current = game.getActions().getHead();
+			JSONArray arrayl = new JSONArray();
+			while (current != null) {
+				JSONObject ob = new JSONObject();
+				ob.put("action", new Integer(current.getInformation()));
+				current = current.getNext();
+				arrayl.add(ob);
+			}
+			object.put("actionList", arrayl);
 			o.put("player", object);
 			array.add(o);
 		}

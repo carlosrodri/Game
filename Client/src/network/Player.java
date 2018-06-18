@@ -11,14 +11,12 @@ import views.MainWindow;
 
 public class Player extends Connection{
 
-	private String name;
 	private Game game;
 	private MainWindow mainWindow;
 	private JSONFileManager fileManager;
 
 	public Player(int sleep, int x, int y, String avatar, String ip, int port, String name) throws IOException{
 		super(ip, port);
-		this.name = name;
 		game = new Game(sleep, x, y, avatar, name);
 		send(name);
 	}
@@ -96,5 +94,10 @@ public class Player extends Connection{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void enqueueActions(int keyCode) {
+		game.enqueueActions(keyCode);
+		
 	}
 }

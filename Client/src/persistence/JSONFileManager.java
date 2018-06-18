@@ -42,6 +42,11 @@ public class JSONFileManager{
 			g.setLife(Integer.parseInt(o.get("life").toString()));
 			g.setBackground(o.get("background").toString());
 			g.setPosition(Integer.parseInt(o.get("posx").toString()), Integer.parseInt(o.get("y").toString()));
+			ArrayList<Integer> actionList = new ArrayList<>();
+			for (Object action : (JSONArray)o.get("actionList")) {
+				actionList.add(Integer.parseInt(((JSONObject)action).get("action").toString()));
+			}
+			g.enqueue(actionList);
 			list.add(g);
 		}
 		return list;

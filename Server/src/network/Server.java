@@ -15,7 +15,8 @@ public class Server {
 	private ServerSocket serverSocket;
 	private static MyUtilities myUtilities;
 	private static JSONFileManagerServer fileManagerServer;
-	
+	private static boolean state;
+
 	public static ArrayList<ClientConnections> clientConnections;
 
 	public Server() throws IOException {
@@ -45,15 +46,17 @@ public class Server {
 	}
 
 	public static void sendMessageALL() throws IOException{
-		fileManagerServer.writeGameList(myUtilities.getGameList());
-		for (ClientConnections clientConnections2 : clientConnections) {
-			try {
-				if (clientConnections2.getSocket().isConnected()) {
-					clientConnections2.send(ConstantsNetwork.FILE);
-					clientConnections2.sendFile();
+		if(fileManagerServer != null && myUtilities != null) {
+			fileManagerServer.writeGameList(myUtilities.getGameList());
+			for (ClientConnections clientConnections2 : clientConnections) {
+				try {
+					if (clientConnections2.getSocket().isConnected()) {
+						clientConnections2.send(ConstantsNetwork.FILE);
+						clientConnections2.sendFile();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
 	}
@@ -71,18 +74,22 @@ public class Server {
 		try {
 			clientConnections2.saveFile();
 			myUtilities.add(fileManagerServer.readGame());
+			state = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-			try {
-				sendMessageALL();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		state = false;
 	}
 
 	public static ArrayList<Game> getList(){
 		return myUtilities.getGameList();
 	}
-	
+
+	public static boolean isState() {
+		return state;
+	}
+
+	public static void setState(boolean state) {
+		Server.state = state;
+	}
 }
