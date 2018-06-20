@@ -1,6 +1,7 @@
-/persistence/
-/network/
 /constants/
+/lib/
 /models/
-/utilities/
+/network/
+/persistence/
 /structures/
+/utilities/

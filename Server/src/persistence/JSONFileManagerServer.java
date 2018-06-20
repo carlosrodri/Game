@@ -12,7 +12,6 @@ import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
 import models.entities.Game;
 import models.entities.Shoot;
-import structures.NodeList;
 
 public class JSONFileManagerServer{
 
@@ -30,22 +29,19 @@ public class JSONFileManagerServer{
 			e.printStackTrace();
 		}
 		JSONObject o = (JSONObject) obj;
-		
-		Game g = new Game(Integer.parseInt(o.get("sleep").toString()), Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
-				o.get("avatar").toString(),
-				o.get("nombre").toString());
-		
-		g.setLife(Integer.parseInt(o.get("life").toString()));
-		g.setBackground(o.get("background").toString());
 
+		Game g = new Game(200, Integer.parseInt(o.get("x").toString()), Integer.parseInt(o.get("y").toString()),
+				o.get("avatar").toString(),o.get("nombre").toString());
+		g.setLife(100);
+		g.setBackground(ConstantsUI.LEVEL1);
 		return g;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void writeGameList(ArrayList<Game> gameList) throws IOException {
-		
+
 		JSONArray array = new JSONArray();
-		
+
 		for (Game game : gameList) {
 			JSONObject object = new JSONObject();
 			JSONObject o  = new JSONObject();
@@ -58,15 +54,6 @@ public class JSONFileManagerServer{
 			object.put("background", game.getBackground());
 			object.put("posx", new Integer((int) game.getPlayer().getX()));
 			object.put("posy", new Integer((int) game.getPlayer().getY()));
-			NodeList<Integer> current = game.getActions().getHead();
-			JSONArray arrayl = new JSONArray();
-			while (current != null) {
-				JSONObject ob = new JSONObject();
-				ob.put("action", new Integer(current.getInformation()));
-				current = current.getNext();
-				arrayl.add(ob);
-			}
-			object.put("actionList", arrayl);
 			o.put("player", object);
 			array.add(o);
 		}
@@ -83,30 +70,30 @@ public class JSONFileManagerServer{
 		JSONObject topObj = null;
 
 		JSONArray enemyList = new JSONArray();
-			for (Game game : gameList) {
-				obj = new JSONObject();
-				topObj = new JSONObject();
-				topObj.put("name", game.getName());
-				topObj.put("x", (int)game.getX());
-				topObj.put("y", (int)game.getY());
-				topObj.put("avatar", game.getAvatar());
-				JSONArray enemy = new JSONArray();
-				for (Rectangle rectangle : game.getEnemyList()) {
-					enemy.add(new JSONObject().put("x", rectangle.getX()));
-					enemy.add(new JSONObject().put("y", rectangle.getY()));
-				}
-				topObj.put("enemyList", enemy);
-				JSONArray shootList = new JSONArray();
-				for (Shoot shoot : game.getList()) {
-					shootList.add(new JSONObject().put("image", shoot.getImage()));
-					shootList.add(new JSONObject().put("x", shoot.getRectangle().getX()));
-					shootList.add(new JSONObject().put("y", shoot.getRectangle().getY()));
-				}
-				topObj.put("shootList", shootList);
+		for (Game game : gameList) {
+			obj = new JSONObject();
+			topObj = new JSONObject();
+			topObj.put("name", game.getName());
+			topObj.put("x", (int)game.getX());
+			topObj.put("y", (int)game.getY());
+			topObj.put("avatar", game.getAvatar());
+			JSONArray enemy = new JSONArray();
+			for (Rectangle rectangle : game.getEnemyList()) {
+				enemy.add(new JSONObject().put("x", rectangle.getX()));
+				enemy.add(new JSONObject().put("y", rectangle.getY()));
+			}
+			topObj.put("enemyList", enemy);
+			JSONArray shootList = new JSONArray();
+			for (Shoot shoot : game.getList()) {
+				shootList.add(new JSONObject().put("image", shoot.getImage()));
+				shootList.add(new JSONObject().put("x", shoot.getRectangle().getX()));
+				shootList.add(new JSONObject().put("y", shoot.getRectangle().getY()));
+			}
+			topObj.put("shootList", shootList);
 
-				obj.put("Player", topObj);
+			obj.put("Player", topObj);
 
-				enemyList.add(obj);
+			enemyList.add(obj);
 		}
 
 		try {

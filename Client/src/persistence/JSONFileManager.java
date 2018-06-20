@@ -34,19 +34,14 @@ public class JSONFileManager{
 			objCyclist = (JSONObject) object;
 
 			JSONObject o = (JSONObject) objCyclist.get("player");
-			Game g = new Game(Integer.parseInt(o.get("sleep").toString()), 
+			Game g = new Game( 
 					Integer.parseInt(o.get("x").toString()),
 					Integer.parseInt(o.get("y").toString()),
 					o.get("avatar").toString(),
 					o.get("nombre").toString());
 			g.setLife(Integer.parseInt(o.get("life").toString()));
 			g.setBackground(o.get("background").toString());
-			g.setPosition(Integer.parseInt(o.get("posx").toString()), Integer.parseInt(o.get("y").toString()));
-			ArrayList<Integer> actionList = new ArrayList<>();
-			for (Object action : (JSONArray)o.get("actionList")) {
-				actionList.add(Integer.parseInt(((JSONObject)action).get("action").toString()));
-			}
-			g.enqueue(actionList);
+			g.setPosition(Integer.parseInt(o.get("posx").toString()), Integer.parseInt(o.get("posy").toString()));
 			list.add(g);
 		}
 		return list;
@@ -56,7 +51,6 @@ public class JSONFileManager{
 	public void writeFile(String path, Game game) throws IOException {
 		JSONObject object = new JSONObject();
 
-		object.put("sleep", new Integer(game.getSleep()));
 		object.put("x", new Integer(game.getX()));
 		object.put("y", new Integer(game.getY()));
 		object.put("avatar", game.getAvatar());

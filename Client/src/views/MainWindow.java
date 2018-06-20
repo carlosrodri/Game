@@ -30,7 +30,6 @@ public class MainWindow extends JFrame{
 	}
 
 	public void setGame(ArrayList<Game> gameList) {
-		System.out.println("setea el juegoooooooo   ");
 		panelDrawing.setGame(gameList);
 	}
 

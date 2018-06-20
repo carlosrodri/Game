@@ -68,9 +68,9 @@ public class PanelDrawing extends JPanel{
 	}
 
 	private void paintPlayer(Graphics g, Game game) {
-			g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getPlayer().getX(), (int)game.getPlayer().getY(), (int)game.getPlayer().getWidth(),
-					(int)game.getPlayer().getHeight(), this);
-			
+		g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getPlayer().getX(), (int)game.getPlayer().getY(), (int)game.getPlayer().getWidth(),
+				(int)game.getPlayer().getHeight(), this);
+
 	}
 
 	private void paintShoot(Graphics g, Game game, int n) {
@@ -96,7 +96,9 @@ public class PanelDrawing extends JPanel{
 
 	public void setGame(ArrayList<Game> gamelist) {
 		this.gameList = gamelist;
-		background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
+		if(gamelist.size() != 0) {
+			background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
+		}
 		revalidate();
 	}
 }

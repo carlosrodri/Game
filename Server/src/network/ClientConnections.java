@@ -18,14 +18,11 @@ public class ClientConnections extends Connection{
 
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
-		timer = new Timer(50, new ActionListener() {
+		timer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					if(Server.isState()) {
 						Server.sendMessageALL();
-						Server.setState(false);
-					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -54,7 +51,6 @@ public class ClientConnections extends Connection{
 	}
 
 	private void enqueue() throws IOException {
-		Server.setState(true);
 		String name = readResquest();
 		int action = readRequestInt();
 		for (Game game : Server.getList()) {

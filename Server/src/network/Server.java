@@ -74,11 +74,9 @@ public class Server {
 		try {
 			clientConnections2.saveFile();
 			myUtilities.add(fileManagerServer.readGame());
-			state = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		state = false;
 	}
 
 	public static ArrayList<Game> getList(){

@@ -1,39 +1,20 @@
 package models.entities;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Timer;
-
-import constants.ConstantsUI;
-import models.dao.Hability;
-import models.dao.MyThread;
-import structures.NodeList;
-import structures.Queue;
-
-public class Game extends MyThread{
+public class Game{
 	private Rectangle player;
 	private List<Rectangle> enemyList;
 	private List<Shoot> shootList;
 	private String avatar;
 	private int x, y;
 	private int life, level;
-	private Timer timer;
 	private String background;
 	private String name;
-	private int sleep;
-	private Queue<Integer> actions;
 
-	public Game(int sleep, int x, int y, String avatar, String name) {
-		super(sleep);
-		this.sleep = sleep;
+	public Game(int x, int y, String avatar, String name) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -43,134 +24,19 @@ public class Game extends MyThread{
 		enemyList = new ArrayList<>();
 		life = 100;
 		level = 1;
-		actions = new Queue<>();
 
-		timer = new Timer(10, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				paintEnemy();
-				try {
-					manageActions();
-					paintShoot();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		timer.start();
 	}
 
 	public String getAvatar() {
 		return avatar;
 	}
 
-	private int randomPositionY() {
-		return (int)(Math.random()*(y-50))+100;
-	}
-
-	private void quitLife() {
-		life -= 5;
-	}
-
 	public int getLife() {
 		return life;
 	}
 
-	@Override
-	public void executeTask() {
-		try {
-			manageActions();
-			paintEnemy();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void paintEnemy() {
-		for (Rectangle rectangle : enemyList) {
-			rectangle.setLocation(randomLocation());
-		}
-	}
-
-	private Point randomLocation() {
-		return new Point((int)(Math.random()*1200)+20, (int)(Math.random()*900)+10);
-	}
-
-	private void paintShoot() {
-		for (Shoot shoot : shootList) {
-			shoot.getRectangle().setLocation((int)shoot.getRectangle().getX()+15, 
-					(int)shoot.getRectangle().getY());
-		}
-	}
-
-	public void moveleft() {
-		player.setLocation((int)player.getX()-20, (int)player.getY());
-	}
-
-	public void moveRigth() {
-		player.setLocation((int)player.getX()+20, (int)player.getY());
-	}
-
-	public void moveUp() {
-		player.setLocation((int)player.getX(), (int)player.getY()-20);
-	}
-
-	public void moveDown() {
-		player.setLocation((int)player.getX(), (int)player.getY()+20);
-	}
-
-	public void addEnenmy() {
-		generateMap(level);
-		if(level != 5) {
-			for (int i = 0; i < level*3; i++) {
-				enemyList.add(new Rectangle(x+10, randomPositionY(), 50, 50));
-			}
-			level ++;
-		}else {
-			enemyList.add(new Rectangle(x, randomPositionY(), 200, 200));
-		}
-	}
-
-	private void generateMap(int level) {
-		switch (level) {
-		case 1:
-			background = ConstantsUI.LEVEL1;
-			break;
-		case 2:
-			background = ConstantsUI.LEVEL2;
-			break;
-		case 3:
-			background = ConstantsUI.LEVEL3;
-			break;
-		case 4:
-			background = ConstantsUI.LEVEL4;
-			break;
-		}
-	}
-
 	public String getBackground() {
 		return background;
-	}
-
-	public void manageShoot(int key) {
-		switch (key) {
-		case KeyEvent.VK_E:
-			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
-					ConstantsUI.SIZE_BASIC), Hability.BASIC, 20, ConstantsUI.BASIC_SHOOT));
-			break;
-		case KeyEvent.VK_R:
-			manageLife();
-			break;
-		case KeyEvent.VK_T:
-			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
-			break;
-		}
-	}
-
-	private void manageLife() {
-		if(life < 100) {
-			life += 5;
-		}
 	}
 
 	public List<Rectangle> getEnemyList(){
@@ -185,68 +51,9 @@ public class Game extends MyThread{
 		return player;
 	}
 
-	public void validate() {
-		for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
-			Shoot s = shoot.next();
-			for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
-				Rectangle e = enemy.next();
-				if(s.getRectangle().intersects(e) && e.getWidth() == 50) {
-					enemy.remove();
-				}
-			}
-		}
-	}
-
-	public boolean validateLife() {
-		for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
-			Rectangle e = enemy.next();
-			if(player.intersects(e)) {
-				enemy.remove();
-				quitLife();
-			}
-		}
-		if(life <= 0) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-
-	public boolean validateLevel() {
-		if(enemyList == null && life > 0 || enemyList.size() == 0) {
-			shootList.clear();
-			return true;
-		}else {
-			return false;
-		}
-	}
-
 	public void setDimensions(int width, int height) {
 		this.x = width;
 		this.y = height;
-	}
-
-	public void manageMovement(int action) {
-		switch (action) {
-		case KeyEvent.VK_UP:
-			moveUp();
-			break;
-		case KeyEvent.VK_DOWN:
-			moveDown();
-			break;
-		case KeyEvent.VK_LEFT:
-			moveleft();
-			break;
-		case KeyEvent.VK_RIGHT:
-			moveRigth();
-			break;
-		default:
-			break;
-		}
-	}
-
-	public int getSleep() {
-		return sleep;
 	}
 	
 	public int getY() {
@@ -272,45 +79,8 @@ public class Game extends MyThread{
 	public void setPosition(int x, int y) {
 		player.setLocation(x, y);
 	}
-
-	public void enqueueActions(int keyCode) {
-		actions.enqueue(new NodeList<Integer>(keyCode));
-	}
 	
-	private void manageActions() throws IOException {
-		if (!actions.isEmpty()) {
-			switch (actions.dequeue().getInformation()) {
-			case KeyEvent.VK_LEFT:
-				manageMovement(KeyEvent.VK_LEFT);
-				break;
-			case KeyEvent.VK_RIGHT:
-				manageMovement(KeyEvent.VK_RIGHT);
-				break;
-			case KeyEvent.VK_UP:
-				manageMovement(KeyEvent.VK_UP);
-				break;
-			case KeyEvent.VK_DOWN:
-				manageMovement(KeyEvent.VK_DOWN);
-				break;
-			case KeyEvent.VK_E:
-				manageShoot(KeyEvent.VK_E);
-				break;
-			case KeyEvent.VK_T:
-				manageShoot(KeyEvent.VK_T);
-				break;
-			} 
-		}else {
-			actions.clear();
-		}
-	}
-	
-	public void enqueue(ArrayList<Integer> list) {
-		for (Integer integer : list) {
-			actions.enqueue(new NodeList<Integer>(integer));
-		}
-	}
-	
-	public Queue<Integer> getActions(){
-		return actions;
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }
