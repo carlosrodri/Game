@@ -26,7 +26,7 @@ public class Player extends Connection{
 		try {
 			switch (readResponse()) {
 			case ConstantsNetwork.FILE:
-				readFile();
+//				readFile();
 				break;
 			case ConstantsNetwork.LIST:
 				if(fileManager != null) {
@@ -45,12 +45,12 @@ public class Player extends Connection{
 		return game.getName();
 	}
 
-	private void readFile() {
-		try {
-			saveFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//	private void readFile() {
+//		try {
+//			saveFile();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 //		try {
 //			if(mainWindow != null && fileManager != null) {
 //				mainWindow.setGame(fileManager.readFile());
@@ -60,7 +60,7 @@ public class Player extends Connection{
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-	}
+//	}
 
 	public Game getGame() {
 		return game;

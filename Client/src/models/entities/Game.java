@@ -3,8 +3,11 @@ package models.entities;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import constants.ConstantsUI;
+import models.dao.Hability;
 import models.dao.MyThread;
 
 public class Game extends MyThread{
@@ -13,10 +16,9 @@ public class Game extends MyThread{
 	private List<Shoot> shootList;
 	private String avatar;
 	private int x, y;
-	private int life, level;
+	private int life;
 	private String background;
 	private String name;
-	private boolean var;
 
 	public Game(int x, int y, String avatar, String name) {
 		super(100);
@@ -28,7 +30,6 @@ public class Game extends MyThread{
 		shootList = new ArrayList<>();
 		enemyList = new ArrayList<>();
 		life = 100;
-		level = 1;
 	}
 
 	public String getAvatar() {
@@ -84,10 +85,6 @@ public class Game extends MyThread{
 		player.setLocation(x, y);
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
 	public void moveleft() {
 		player.setLocation((int)player.getX()-20, (int)player.getY());
 	}
@@ -105,6 +102,10 @@ public class Game extends MyThread{
 		player.setLocation((int)player.getX(), (int)player.getY()+20);
 	}
 
+	public void addEnenmy(Rectangle enemy) {
+		enemyList.add(enemy);
+	}
+	
 	public void manageActions(int action) {
 			switch (action) {
 			case KeyEvent.VK_UP:
@@ -119,20 +120,21 @@ public class Game extends MyThread{
 			case KeyEvent.VK_RIGHT:
 				moveRigth();
 				break;
+			case KeyEvent.VK_E:
+				shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
+						ConstantsUI.SIZE_BASIC), Hability.BASIC));
+				break;
+			case KeyEvent.VK_T:
+				shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI));
+				break;
 			}
-
-		//		case KeyEvent.VK_E:
-		//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
-		//					ConstantsUI.SIZE_BASIC), Hability.BASIC, 20, ConstantsUI.BASIC_SHOOT));
-		//			break;
-		//		case KeyEvent.VK_T:
-		//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
-		//			break;
 	}
 
 	@Override
 	public void executeTask() {
 		validateMap();
+		paintShoot();
+		validateShoot();
 	}
 
 	private void validateMap() {
@@ -147,4 +149,26 @@ public class Game extends MyThread{
 		}
 	}
 
+	private void paintShoot() {
+		for (Shoot shoot : shootList) {
+			shoot.getRectangle().setLocation((int)shoot.getRectangle().getX()+15, 
+					(int)shoot.getRectangle().getY());
+		}
+	}
+
+	public void setShootList(ArrayList<Shoot> shoots) {
+		this.shootList = shoots;
+	}
+	
+	private void validateShoot() {
+		if(shootList.size() > 0) {
+			for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
+				Shoot s = shoot.next();
+				if(s.getRectangle().getX() > x) {
+					System.out.println("remueve en   "+ x);
+					shoot.remove();
+				}
+			}
+		}
+	}
 }

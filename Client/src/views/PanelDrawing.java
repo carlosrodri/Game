@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import constants.ConstantsUI;
 import controllers.Controller;
+import models.dao.Hability;
 import models.entities.Game;
 import models.entities.Shoot;
 
@@ -20,7 +21,6 @@ public class PanelDrawing extends JPanel{
 	private final int POSITION_Y_STRING = 73;
 	private final int POSITION_Y_HABILITY = 30;
 	private Game game;
-	private int n = 0;
 
 	public PanelDrawing(Controller controller) {
 		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
@@ -36,38 +36,32 @@ public class PanelDrawing extends JPanel{
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(gameList != null) {
 			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
-			int n = 0;
 			for (Game game : gameList) {
 				paintPlayer(g, game);
 				paintEnemy(g, game);
-				paintShoot(g, game, n);
-				paintLife(g, game, n);
-				paintHabilities(g, n);
-				n++;
+				paintShoot(g, game);
+				paintLife(g);
+				paintHabilities(g);
 			}
 		}
 	}
 
-	private void paintHabilities(Graphics g, int n) {
-		if(n == 0) {
-			g.setColor(Color.WHITE);
-			g.setFont(ConstantsUI.FONT_GAME);
-			g.drawString("Habilities: ", (getWidth()/5), 15);
-			g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-			g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
-			g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
-			g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
-		}
+	private void paintHabilities(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.setFont(ConstantsUI.FONT_GAME);
+		g.drawString("Habilities: ", (getWidth()/5), 15);
+		g.drawImage(basic, (getWidth()/5), POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.drawString("E", (getWidth()/5)+12 , POSITION_Y_STRING);
+		g.drawImage(ulti, (getWidth()/3)-50, POSITION_Y_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, ConstantsUI.SIZE_ICON_HABILITY, this);
+		g.drawString("T", (getWidth()/3)-38, POSITION_Y_STRING);
 	}
 
-	private void paintLife(Graphics g, Game game, int n) {
-		if(n == 0) {
-			g.setColor(Color.YELLOW);
-			g.fillRect(getWidth()/2, 25, game.getLife(), 20);
-			g.drawRect(getWidth()/2, 25, 100, 20);
-			g.setColor(Color.BLACK);
-			g.drawString("LIFE: " + game.getLife(), (getWidth()/2)+25, 40);
-		}
+	private void paintLife(Graphics g) {
+		g.setColor(Color.YELLOW);
+		g.fillRect(getWidth()/2, 25, game.getLife(), 20);
+		g.drawRect(getWidth()/2, 25, 100, 20);
+		g.setColor(Color.BLACK);
+		g.drawString("LIFE: " + game.getLife(), (getWidth()/2)+25, 40);
 	}
 
 	private void paintPlayer(Graphics g, Game game) {
@@ -80,17 +74,43 @@ public class PanelDrawing extends JPanel{
 		}
 	}
 
-	private void paintShoot(Graphics g, Game game, int n) {
-		if(n == 0) {
-			g.setColor(Color.RED);
+	private void paintShoot(Graphics g, Game game) {
+		if(game.getList().size() > 0 && !game.getName().equals(this.game.getName())) {
 			if(game.getList() != null && game.getList().size() != 0) {
 				for (Shoot shoot : game.getList()) {
-					g.drawImage(new ImageIcon(getClass().getResource(shoot.getImage())).getImage(),
+					g.drawImage(new ImageIcon(getClass().getResource(getImage(shoot.getTypeOfHablility()))).getImage(),
 							(int)shoot.getRectangle().getX(), (int)shoot.getRectangle().getY(), 
-							(int)shoot.getRectangle().getWidth(), (int)shoot.getRectangle().getHeight(), this);
+							getSize(shoot.getTypeOfHablility()), getSize(shoot.getTypeOfHablility()), this);
 				}
 			}
 		}
+		if(this.game != null && this.game.getList().size() > 0) {
+			for (Shoot shoot : this.game.getList()) {
+				g.drawImage(new ImageIcon(getClass().getResource(getImage(shoot.getTypeOfHablility()))).getImage(),
+						(int)shoot.getRectangle().getX(), (int)shoot.getRectangle().getY(), 
+						(int)shoot.getRectangle().getWidth(), (int)shoot.getRectangle().getHeight(), this);
+			}
+		}
+	}
+
+	private int getSize(Hability typeOfHablility) {
+		if(typeOfHablility.toString().equals("BASIC")) {
+			return 20;
+		}else {
+			return 40;
+		}
+	}
+
+	private String getImage(Hability typeOfHablility) {
+		switch (typeOfHablility.toString()) {
+		case "ULTI":
+			return ConstantsUI.ULTI_SHOOT;
+		case "BASIC":
+			return ConstantsUI.BASIC_SHOOT;
+		case "PASSIVE":
+			return ConstantsUI.PASSIVE_SHOOT;
+		}
+		return ConstantsUI.BASIC_SHOOT;
 	}
 
 	public void paintEnemy(Graphics g, Game game) {
@@ -102,15 +122,7 @@ public class PanelDrawing extends JPanel{
 	}
 
 	public void setGame(ArrayList<Game> gamelist) {
-		System.out.println("setea el juego  " + n  + "   veces");
-		for (Game game : gamelist) {
-			System.out.println(game.getX() + "   jajaja");
-		}
-		n++;
 		this.gameList = gamelist;
-//		if(gamelist.size() != 0) {
-//			background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
-//		}
 	}
 
 	public void setLocalGame(Game game) {

@@ -65,6 +65,19 @@ public class Game extends MyThread{
 	public void executeTask() {
 		validateMap();
 		paintShoot();
+		validateShoot();
+	}
+
+	private void validateShoot() {
+		if(shootList.size() > 0) {
+			for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
+				Shoot s = shoot.next();
+				if(s.getRectangle().getX() > x) {
+					System.out.println("remueve en   "+ x);
+					shoot.remove();
+				}
+			}
+		}
 	}
 
 	private void validateMap() {
@@ -114,33 +127,8 @@ public class Game extends MyThread{
 		player.setLocation((int)player.getX(), (int)player.getY()+20);
 	}
 
-	public void addEnenmy() {
-		generateMap(level);
-		if(level != 5) {
-			for (int i = 0; i < level*3; i++) {
-				enemyList.add(new Rectangle(x+10, randomPositionY(), 50, 50));
-			}
-			level ++;
-		}else {
-			enemyList.add(new Rectangle(x, randomPositionY(), 200, 200));
-		}
-	}
-
-	private void generateMap(int level) {
-		switch (level) {
-		case 1:
-			background = ConstantsUI.LEVEL1;
-			break;
-		case 2:
-			background = ConstantsUI.LEVEL2;
-			break;
-		case 3:
-			background = ConstantsUI.LEVEL3;
-			break;
-		case 4:
-			background = ConstantsUI.LEVEL4;
-			break;
-		}
+	public void addEnenmy(Rectangle enemy) {
+		enemyList.add(enemy);
 	}
 
 	public String getBackground() {
@@ -216,10 +204,10 @@ public class Game extends MyThread{
 			break;
 		case KeyEvent.VK_E:
 			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
-					ConstantsUI.SIZE_BASIC), Hability.BASIC, 20, ConstantsUI.BASIC_SHOOT));
+					ConstantsUI.SIZE_BASIC), Hability.BASIC));
 			break;
 		case KeyEvent.VK_T:
-			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
+			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI));
 			break;
 		}
 	}
@@ -227,7 +215,7 @@ public class Game extends MyThread{
 	public int getSleep() {
 		return sleep;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
@@ -239,15 +227,15 @@ public class Game extends MyThread{
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setLife(int life) {
 		this.life = life;
 	}
-	
+
 	public void setBackground(String background) {
 		this.background = background;
 	}
-	
+
 	public void enqueueActions(int keyCode) {
 		manageActions(keyCode);
 	}

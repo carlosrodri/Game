@@ -1,5 +1,7 @@
 package persistence;
 
+import java.awt.Rectangle;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,7 +12,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
+import models.dao.Hability;
 import models.entities.Game;
+import models.entities.Shoot;
 
 public class JSONFileManager{
 
@@ -58,25 +62,52 @@ public class JSONFileManager{
 		object.put("background", game.getBackground());
 		object.put("life", new Integer(game.getLife()));
 
-		FileWriter writer = new FileWriter(path);
-		writer.write(object.toJSONString());
-		writer.flush();
-		writer.close();
+		File f = new File(path);
+		if(f.exists()) {
+			FileWriter writer = new FileWriter(path+"game.json");
+			writer.write(object.toJSONString());
+			writer.flush();
+			writer.close();
+		}else {
+			f.mkdirs();
+			FileWriter writer = new FileWriter(path+"game.json");
+			writer.write(object.toJSONString());
+			writer.flush();
+			writer.close();
+		}
 	}
 
 	public ArrayList<Game> readList(String readResponse) {
-		System.out.println("entra");
 		ArrayList<Game> list = new ArrayList<>();
 		String p[] = readResponse.split("#");
 		for (int i = 0; i < p.length; i++) {
-			System.out.println(p[i] + "  man");
+			ArrayList<Shoot> shootList = new ArrayList<>();
 			String g[] = p[i].split("=");
-			System.out.println(g[0]+ " " + g[1] + " " + g[2]  + " " + g[3] + "   estoooo");
-			list.add(new Game((int)Double.parseDouble(g[0]),
-					(int)Double.parseDouble(g[1]),
-					g[2],
-					g[3]));
+			Game game = new Game((int)Double.parseDouble(g[0]), (int)Double.parseDouble(g[1]), g[2], g[4]);
+			if(!g[3].equals("-") ) {
+				String shoot[] = g[3].split("%");
+				for (int j = 0; j < shoot.length; j++) {
+					String c[] = shoot[j].split("_");
+					shootList.add(new Shoot(new Rectangle((int)Double.parseDouble(c[0]), 
+							(int)Double.parseDouble(c[1]), 40, 40),
+							hability(c[2])));
+				}
+			}
+			game.setShootList(shootList);
+			list.add(game);
 		}
 		return list;
+	}
+
+	private Hability hability(String string) {
+		switch (string.toUpperCase()) {
+		case "BASIC":
+			return Hability.BASIC;
+		case "ULTI":
+			return Hability.ULTI;
+		case "PASIVE":
+			return Hability.PASIVE;
+		}
+		return Hability.BASIC;
 	}
 }

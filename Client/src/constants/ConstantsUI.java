@@ -10,7 +10,7 @@ public class ConstantsUI {
 	public static final String ENEMY_IMG = "/img/enemy.png";
 	public static final String BOSS_IMG = "/img/bigEnemy.png";
 	public static final String GUNMAN_IMG = "/img/gunman.png";
-	public static final String PATH_SEND = "src/persistence/game.json";
+	public static final String PATH_SEND = "src/datas/";
 	public static final String BACK_IMAGE = "/img/fondo.jpg";
 	public static final String LEVEL1 = "/img/fondo.jpg";
 	public static final String LEVEL2 = "/img/level2.jpg";

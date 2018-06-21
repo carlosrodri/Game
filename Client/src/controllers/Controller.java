@@ -42,7 +42,7 @@ public class Controller implements KeyListener, ActionListener{
 				mainWindow.getPort(), mainWindow.getPlayerName());
 		player.send(ConstantsNetwork.GAME);
 		fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
-		player.sendFile(new File(ConstantsUI.PATH_SEND));
+		player.sendFile(new File(ConstantsUI.PATH_SEND+"game.json"));
 		mainWindow.initPanelDrwaing();
 		player.setWindow(mainWindow, fileManager);
 		mainWindow.setLocalGame(player.getGame());
