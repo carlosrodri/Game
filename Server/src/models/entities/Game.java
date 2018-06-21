@@ -63,12 +63,14 @@ public class Game extends MyThread{
 
 	@Override
 	public void executeTask() {
+		validateMap();
 		paintShoot();
-		paintPlayer();
 	}
 
-	private void paintPlayer() {
-		player.setLocation((int)player.getX(), (int)player.getY());
+	private void validateMap() {
+		if(player.getX() == x) {
+			player.setLocation(x, (int)player.getY());
+		}
 	}
 
 	private void paintEnemy() {

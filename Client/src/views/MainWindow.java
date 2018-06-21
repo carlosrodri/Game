@@ -1,10 +1,13 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 import controllers.Controller;
 import models.entities.Game;
@@ -19,15 +22,25 @@ public class MainWindow extends JFrame{
 		this.addKeyListener(controller);
 		setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(600, 900);
+		
+		new Timer(10, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(panelDrawing != null) {
+					repaint();
+				}
+			}
+		}).start();
 		
 		setVisible(true);
 	}
 
-	public void paint() {
-		panelDrawing.repaint();
-		panelDrawing.revalidate();
-		this.repaint();
-	}
+//	public void paint() {
+//		panelDrawing.repaint();
+//		panelDrawing.revalidate();
+//		this.repaint();
+//	}
 
 	public void setGame(ArrayList<Game> gameList) {
 		panelDrawing.setGame(gameList);
@@ -48,5 +61,9 @@ public class MainWindow extends JFrame{
 	
 	public String getPlayerName() {
 		return JOptionPane.showInputDialog("Name");
+	}
+
+	public void setLocalGame(Game game) {
+		panelDrawing.setLocalGame(game);
 	}
 }

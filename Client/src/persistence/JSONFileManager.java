@@ -63,4 +63,20 @@ public class JSONFileManager{
 		writer.flush();
 		writer.close();
 	}
+
+	public ArrayList<Game> readList(String readResponse) {
+		System.out.println("entra");
+		ArrayList<Game> list = new ArrayList<>();
+		String p[] = readResponse.split("#");
+		for (int i = 0; i < p.length; i++) {
+			System.out.println(p[i] + "  man");
+			String g[] = p[i].split("=");
+			System.out.println(g[0]+ " " + g[1] + " " + g[2]  + " " + g[3] + "   estoooo");
+			list.add(new Game((int)Double.parseDouble(g[0]),
+					(int)Double.parseDouble(g[1]),
+					g[2],
+					g[3]));
+		}
+		return list;
+	}
 }

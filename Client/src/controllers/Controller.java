@@ -27,7 +27,6 @@ public class Controller implements KeyListener, ActionListener{
 	private DialogInstructions dialogInstructions;
 	private DialogMoreInfo dialogMoreInfo;
 	private JSONFileManager fileManager;
-	private Timer timer;
 
 	public Controller() {
 		dialogLoggin = new DialogLoggin(this);
@@ -35,27 +34,28 @@ public class Controller implements KeyListener, ActionListener{
 		dialogInstructions = new DialogInstructions();
 		dialogMoreInfo = new DialogMoreInfo();
 		dialogAvatar = new DialogAvatar(this);
-		timer = new Timer(100, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(mainWindow != null) {
-				mainWindow.repaint();
-				}
-			}
-		});
-		timer.start();
 	}
 
 	private void validateLoad() throws IOException {
 		mainWindow = new MainWindow(this);
-		player = new Player(300, 400, dialogAvatar.getHero(), mainWindow.getIP(),
+		player = new Player(mainWindow.getHeight(), mainWindow.getWidth(), dialogAvatar.getHero(), mainWindow.getIP(),
 				mainWindow.getPort(), mainWindow.getPlayerName());
 		player.send(ConstantsNetwork.GAME);
 		fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
 		player.sendFile(new File(ConstantsUI.PATH_SEND));
 		mainWindow.initPanelDrwaing();
 		player.setWindow(mainWindow, fileManager);
+		mainWindow.setLocalGame(player.getGame());
+//		new Timer(10, new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try {
+//					mainWindow.setGame(fileManager.readFile());
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
+//			}
+//		}).start();
 	}
 
 	@Override
@@ -67,6 +67,7 @@ public class Controller implements KeyListener, ActionListener{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		player.manageMovemenet(e.getKeyCode());
 	}
 
 	@Override

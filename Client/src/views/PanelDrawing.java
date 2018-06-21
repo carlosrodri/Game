@@ -19,11 +19,14 @@ public class PanelDrawing extends JPanel{
 	private Image enemy, background, ulti, basic;
 	private final int POSITION_Y_STRING = 73;
 	private final int POSITION_Y_HABILITY = 30;
+	private Game game;
+	private int n = 0;
 
 	public PanelDrawing(Controller controller) {
 		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
 		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
+		background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
 		this.addKeyListener(controller);
 	}
 
@@ -32,7 +35,7 @@ public class PanelDrawing extends JPanel{
 		super.paint(g);
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(gameList != null) {
-			background = new ImageIcon(getClass().getResource(gameList.get(0).getBackground())).getImage();
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
 			int n = 0;
 			for (Game game : gameList) {
 				paintPlayer(g, game);
@@ -68,9 +71,13 @@ public class PanelDrawing extends JPanel{
 	}
 
 	private void paintPlayer(Graphics g, Game game) {
-		g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getPlayer().getX(), (int)game.getPlayer().getY(), (int)game.getPlayer().getWidth(),
-				(int)game.getPlayer().getHeight(), this);
-
+		if(!game.getName().equals(this.game.getName()) && this.game != null) {
+			g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getX(), (int)game.getY(), (int)game.getPlayer().getWidth(),
+					(int)game.getPlayer().getHeight(), this);
+		}else {
+			g.drawImage(new ImageIcon(getClass().getResource(this.game.getAvatar())).getImage(),(int)this.game.getPlayer().getX(), (int)this.game.getPlayer().getY(), 50,
+					50, this);
+		}
 	}
 
 	private void paintShoot(Graphics g, Game game, int n) {
@@ -95,10 +102,18 @@ public class PanelDrawing extends JPanel{
 	}
 
 	public void setGame(ArrayList<Game> gamelist) {
-		this.gameList = gamelist;
-		if(gamelist.size() != 0) {
-			background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
+		System.out.println("setea el juego  " + n  + "   veces");
+		for (Game game : gamelist) {
+			System.out.println(game.getX() + "   jajaja");
 		}
-		revalidate();
+		n++;
+		this.gameList = gamelist;
+//		if(gamelist.size() != 0) {
+//			background = new ImageIcon(getClass().getResource(gamelist.get(0).getBackground())).getImage();
+//		}
+	}
+
+	public void setLocalGame(Game game) {
+		this.game = game;
 	}
 }

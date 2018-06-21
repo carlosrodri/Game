@@ -6,5 +6,6 @@ public class ConstantsNetwork {
 	public static final String GAME = "GAME";
 	public static final String SHOOT = "SHOOT";
 	public static final String MOVEMENT = "MOVEMENT";
+	public static final String LIST = "LIST";
 
 }

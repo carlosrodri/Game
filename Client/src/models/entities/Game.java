@@ -1,10 +1,13 @@
 package models.entities;
 
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game{
+import models.dao.MyThread;
+
+public class Game extends MyThread{
 	private Rectangle player;
 	private List<Rectangle> enemyList;
 	private List<Shoot> shootList;
@@ -13,8 +16,10 @@ public class Game{
 	private int life, level;
 	private String background;
 	private String name;
+	private boolean var;
 
 	public Game(int x, int y, String avatar, String name) {
+		super(100);
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -24,7 +29,6 @@ public class Game{
 		enemyList = new ArrayList<>();
 		life = 100;
 		level = 1;
-
 	}
 
 	public String getAvatar() {
@@ -55,7 +59,7 @@ public class Game{
 		this.x = width;
 		this.y = height;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
@@ -67,20 +71,80 @@ public class Game{
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setLife(int life) {
 		this.life = life;
 	}
-	
+
 	public void setBackground(String background) {
 		this.background = background;
 	}
-	
+
 	public void setPosition(int x, int y) {
 		player.setLocation(x, y);
 	}
-	
+
 	public void setLevel(int level) {
 		this.level = level;
 	}
+
+	public void moveleft() {
+		player.setLocation((int)player.getX()-20, (int)player.getY());
+	}
+
+	public void moveRigth() {
+		player.setLocation((int)player.getX()+20, (int)player.getY());
+	}
+
+	public void moveUp() {
+		player.setLocation((int)player.getX(), (int)player.getY()-20);
+		System.out.println("ARRIBA" + (int)player.getX() + "   " + (int)player.getY());
+	}
+
+	public void moveDown() {
+		player.setLocation((int)player.getX(), (int)player.getY()+20);
+	}
+
+	public void manageActions(int action) {
+			switch (action) {
+			case KeyEvent.VK_UP:
+				moveUp();
+				break;
+			case KeyEvent.VK_DOWN:
+				moveDown();
+				break;
+			case KeyEvent.VK_LEFT:
+				moveleft();
+				break;
+			case KeyEvent.VK_RIGHT:
+				moveRigth();
+				break;
+			}
+
+		//		case KeyEvent.VK_E:
+		//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), ConstantsUI.SIZE_BASIC, 
+		//					ConstantsUI.SIZE_BASIC), Hability.BASIC, 20, ConstantsUI.BASIC_SHOOT));
+		//			break;
+		//		case KeyEvent.VK_T:
+		//			shootList.add(new Shoot(new Rectangle((int)player.getX(), (int)player.getY(), 40, 40), Hability.ULTI, 80, ConstantsUI.ULTI_SHOOT));
+		//			break;
+	}
+
+	@Override
+	public void executeTask() {
+		validateMap();
+	}
+
+	private void validateMap() {
+		if(player.getX() >= x) {
+			player.setLocation(x, (int)player.getY());
+		}else if(player.getX() <= 0) {
+			player.setLocation(1, (int)player.getY());
+		}else if(player.getY() >= y) {
+			player.setLocation((int)player.getX(), y);
+		}else if(player.getY() <= y) {
+			player.setLocation((int)player.getX(), 1);
+		}
+	}
+
 }

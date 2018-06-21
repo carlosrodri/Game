@@ -37,31 +37,38 @@ public class JSONFileManagerServer{
 		return g;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void writeGameList(ArrayList<Game> gameList) throws IOException {
-
-		JSONArray array = new JSONArray();
-
+	public String writeGameList(ArrayList<Game> gameList) throws IOException {
+		System.out.println(gameList.get(0).getPlayer().getX() + "       x del man");
+		String format = "";
 		for (Game game : gameList) {
-			JSONObject object = new JSONObject();
-			JSONObject o  = new JSONObject();
-			object.put("sleep", new Integer(game.getSleep()));
-			object.put("nombre", game.getName());
-			object.put("avatar", game.getAvatar());
-			object.put("x", new Integer(game.getX()));
-			object.put("y", new Integer(game.getY()));
-			object.put("life", new Integer(game.getLife()));
-			object.put("background", game.getBackground());
-			object.put("posx", new Integer((int) game.getPlayer().getX()));
-			object.put("posy", new Integer((int) game.getPlayer().getY()));
-			o.put("player", object);
-			array.add(o);
+			format += game.getPlayer().getX()+"=";
+			format += game.getPlayer().getY()+"=";
+			format += game.getAvatar()+"=";
+			format += game.getName()+"#";
 		}
-
-		FileWriter writer = new FileWriter(ConstantsUI.PATH_FILE, false);
-		writer.write(array.toJSONString());
-		writer.flush();
-		writer.close();
+		return format;
+//		JSONArray array = new JSONArray();
+//
+//		for (Game game : gameList) {
+//			JSONObject object = new JSONObject();
+//			JSONObject o  = new JSONObject();
+//			object.put("sleep", new Integer(game.getSleep()));
+//			object.put("nombre", game.getName());
+//			object.put("avatar", game.getAvatar());
+//			object.put("x", new Integer(game.getX()));
+//			object.put("y", new Integer(game.getY()));
+//			object.put("life", new Integer(game.getLife()));
+//			object.put("background", game.getBackground());
+//			object.put("posx", new Integer((int) game.getPlayer().getX()));
+//			object.put("posy", new Integer((int) game.getPlayer().getY()));
+//			o.put("player", object);
+//			array.add(o);
+//		}
+//
+//		FileWriter writer = new FileWriter(ConstantsUI.PATH_FILE, false);
+//		writer.write(array.toJSONString());
+//		writer.flush();
+//		writer.close();
 	}
 	@SuppressWarnings("unchecked")
 	public void writeFile(String path, ArrayList<Game> gameList) {

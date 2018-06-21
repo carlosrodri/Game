@@ -18,17 +18,6 @@ public class ClientConnections extends Connection{
 
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
-		timer = new Timer(100, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-						Server.sendMessageALL();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		timer.start();
 	}
 
 	@Override
@@ -57,6 +46,7 @@ public class ClientConnections extends Connection{
 			if(game.getName().equals(name)) {
 				System.out.println(" accion encoladaddadada" + "    nombre del man  " + name + "actionnn   " + action);
 				game.enqueueActions(action);
+				Server.sendMessageALL();
 			}
 		}
 	}
