@@ -46,16 +46,12 @@ public class Controller implements KeyListener, ActionListener{
 		mainWindow.initPanelDrwaing();
 		player.setWindow(mainWindow, fileManager);
 		mainWindow.setLocalGame(player.getGame());
-//		new Timer(10, new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					mainWindow.setGame(fileManager.readFile());
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		}).start();
+		new Timer(10, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.setDimesion(mainWindow.getHeight(), mainWindow.getWidth());
+			}
+		}).start();
 	}
 
 	@Override

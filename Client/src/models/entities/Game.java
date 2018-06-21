@@ -137,12 +137,12 @@ public class Game extends MyThread{
 
 	private void validateMap() {
 		if(player.getX() >= x) {
-			player.setLocation(x, (int)player.getY());
+			player.setLocation(x-5, (int)player.getY());
 		}else if(player.getX() <= 0) {
 			player.setLocation(1, (int)player.getY());
 		}else if(player.getY() >= y) {
-			player.setLocation((int)player.getX(), y);
-		}else if(player.getY() <= y) {
+			player.setLocation((int)player.getX(), y-5);
+		}else if(player.getY() <= 0) {
 			player.setLocation((int)player.getX(), 1);
 		}
 	}

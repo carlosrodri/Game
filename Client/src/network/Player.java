@@ -74,4 +74,8 @@ public class Player extends Connection{
 	public void manageMovemenet(int key) {
 		game.manageActions(key);
 	}
+
+	public void setDimesion(int height, int width) {
+		game.setDimensions(width, height);
+	}
 }
