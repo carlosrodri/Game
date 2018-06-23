@@ -13,6 +13,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
 import models.dao.Hability;
+import models.entities.Enemy;
 import models.entities.Game;
 import models.entities.Shoot;
 
@@ -82,8 +83,9 @@ public class JSONFileManager{
 		String p[] = readResponse.split("#");
 		for (int i = 0; i < p.length; i++) {
 			ArrayList<Shoot> shootList = new ArrayList<>();
+			ArrayList<Enemy> enemyList = new ArrayList<>();
 			String g[] = p[i].split("=");
-			Game game = new Game((int)Double.parseDouble(g[0]), (int)Double.parseDouble(g[1]), g[2], g[4]);
+			Game game = new Game((int)Double.parseDouble(g[0]), (int)Double.parseDouble(g[1]), g[2], g[5]);
 			if(!g[3].equals("-") ) {
 				String shoot[] = g[3].split("%");
 				for (int j = 0; j < shoot.length; j++) {
@@ -93,6 +95,17 @@ public class JSONFileManager{
 							hability(c[2])));
 				}
 			}
+			if(!g[4].equals("-") ) {
+				String shoot[] = g[4].split("%");
+				for (int j = 0; j < shoot.length; j++) {
+					String c[] = shoot[j].split("_");
+					Enemy enemy = new Enemy();
+					enemy.setPosition((int)Double.parseDouble(c[0]), (int)Double.parseDouble(c[1]));
+					enemy.setLifeServer(Integer.parseInt(c[2]));
+					enemyList.add(enemy);
+				}
+			}
+			game.setEnemyList(enemyList);
 			game.setShootList(shootList);
 			list.add(game);
 		}

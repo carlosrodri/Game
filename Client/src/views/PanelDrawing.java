@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import constants.ConstantsUI;
 import controllers.Controller;
 import models.dao.Hability;
+import models.entities.Enemy;
 import models.entities.Game;
 import models.entities.Shoot;
 
@@ -17,13 +18,13 @@ public class PanelDrawing extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Game> gameList;
-	private Image enemy, background, ulti, basic;
+	private Image enemyI, background, ulti, basic;
 	private final int POSITION_Y_STRING = 73;
 	private final int POSITION_Y_HABILITY = 30;
 	private Game game;
 
 	public PanelDrawing(Controller controller) {
-		enemy = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
+		enemyI = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
 		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
 		background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
@@ -40,10 +41,10 @@ public class PanelDrawing extends JPanel{
 				paintPlayer(g, game);
 				paintEnemy(g, game);
 				paintShoot(g, game);
-				paintLife(g);
-				paintHabilities(g);
 			}
 		}
+		paintLife(g);
+		paintHabilities(g);
 	}
 
 	private void paintHabilities(Graphics g) {
@@ -115,8 +116,8 @@ public class PanelDrawing extends JPanel{
 
 	public void paintEnemy(Graphics g, Game game) {
 		if(game.getEnemyList() != null && game.getEnemyList().size() != 0) {
-			for (Rectangle rectangle : game.getEnemyList()) {
-				g.drawImage(enemy,(int)rectangle.getX(), (int)rectangle.getY(), (int)rectangle.getWidth(), (int)rectangle.getHeight(), this);
+			for (Enemy enemy : game.getEnemyList()) {
+				g.drawImage(enemyI,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
 			}
 		}
 	}

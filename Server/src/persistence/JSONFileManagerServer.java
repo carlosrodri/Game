@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import constants.ConstantsUI;
+import models.entities.Enemy;
 import models.entities.Game;
 import models.entities.Shoot;
 
@@ -45,6 +46,17 @@ public class JSONFileManagerServer{
 					format += shoot.getRectangle().getX()+"_";
 					format += shoot.getRectangle().getY()+"_";
 					format += shoot.getTypeOfHablility().toString()+"_";
+					format += "%";
+				}
+			}else {
+				format += "-";
+			}
+			format += "=";
+			if(game.getEnemyList().size() > 0) {
+				for (Enemy enemy : game.getEnemyList()) {
+					format += enemy.getEnemy().getX()+"_";
+					format += enemy.getEnemy().getY()+"_";
+					format += enemy.getLife()+"_";
 					format += "%";
 				}
 			}else {

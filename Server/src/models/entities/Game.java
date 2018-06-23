@@ -1,24 +1,19 @@
 package models.entities;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.Timer;
 import constants.ConstantsUI;
 
 public class Game extends MyThread{
 	private Rectangle player;
-	private List<Rectangle> enemyList;
+	private List<Enemy> enemyList;
 	private List<Shoot> shootList;
 	private String avatar;
 	private int x, y;
-	private int life, level;
-	private Timer timer;
+	private int life;
 	private String background;
 	private String name;
 	private int sleep;
@@ -34,23 +29,10 @@ public class Game extends MyThread{
 		shootList = new ArrayList<>();
 		enemyList = new ArrayList<>();
 		life = 100;
-		level = 1;
-
-		timer = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				paintEnemy();
-			}
-		});
-		timer.start();
 	}
 
 	public String getAvatar() {
 		return avatar;
-	}
-
-	private int randomPositionY() {
-		return (int)(Math.random()*(y-50))+100;
 	}
 
 	private void quitLife() {
@@ -66,6 +48,7 @@ public class Game extends MyThread{
 		validateMap();
 		paintShoot();
 		validateShoot();
+		validateLife();
 	}
 
 	private void validateShoot() {
@@ -75,6 +58,21 @@ public class Game extends MyThread{
 				if(s.getRectangle().getX() > x) {
 					System.out.println("remueve en   "+ x);
 					shoot.remove();
+				}
+			}
+		}
+	}
+	
+	public void validateEnemy() {
+		for (Iterator<Shoot> shoot = shootList.iterator(); shoot.hasNext();) {
+			Shoot s = shoot.next();
+			for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
+				Enemy e = enemy.next();
+				if(s.getRectangle().intersects(e.getEnemy())) {
+					e.setLife(-10);
+				}
+				if(e.validate()) {
+					enemy.remove();
 				}
 			}
 		}
@@ -90,17 +88,6 @@ public class Game extends MyThread{
 		}else if(player.getY() <= 0) {
 			player.setLocation((int)player.getX(), 1);
 		}
-	}
-
-
-	private void paintEnemy() {
-		for (Rectangle rectangle : enemyList) {
-			rectangle.setLocation(randomLocation());
-		}
-	}
-
-	private Point randomLocation() {
-		return new Point((int)(Math.random()*1200)+20, (int)(Math.random()*900)+10);
 	}
 
 	private void paintShoot() {
@@ -120,23 +107,19 @@ public class Game extends MyThread{
 
 	public void moveUp() {
 		player.setLocation((int)player.getX(), (int)player.getY()-20);
-		System.out.println("ARRIBA" + (int)player.getX() + "   " + (int)player.getY());
 	}
 
 	public void moveDown() {
 		player.setLocation((int)player.getX(), (int)player.getY()+20);
 	}
 
-	public void addEnenmy(Rectangle enemy) {
+	public void addEnenmy(Enemy enemy) {
+		System.out.println(enemy.getLife() + "    enemigo de shhh");
 		enemyList.add(enemy);
 	}
 
 	public String getBackground() {
 		return background;
-	}
-
-	public List<Rectangle> getEnemyList(){
-		return enemyList;
 	}
 
 	public List<Shoot> getList(){
@@ -150,9 +133,9 @@ public class Game extends MyThread{
 	public void validate() {
 		for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
 			Shoot s = shoot.next();
-			for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
-				Rectangle e = enemy.next();
-				if(s.getRectangle().intersects(e) && e.getWidth() == 50) {
+			for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
+				Enemy e = enemy.next();
+				if(s.getRectangle().intersects(e.getEnemy()) && e.getEnemy().getWidth() == 50) {
 					enemy.remove();
 				}
 			}
@@ -160,9 +143,9 @@ public class Game extends MyThread{
 	}
 
 	public boolean validateLife() {
-		for (Iterator<Rectangle> enemy =  enemyList.iterator(); enemy.hasNext();) {
-			Rectangle e = enemy.next();
-			if(player.intersects(e)) {
+		for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
+			Enemy e = enemy.next();
+			if(player.intersects(e.getEnemy())) {
 				enemy.remove();
 				quitLife();
 			}
@@ -238,5 +221,9 @@ public class Game extends MyThread{
 
 	public void enqueueActions(int keyCode) {
 		manageActions(keyCode);
+	}
+	
+	public List<Enemy> getEnemyList() {
+		return enemyList;
 	}
 }

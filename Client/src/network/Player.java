@@ -30,10 +30,7 @@ public class Player extends Connection{
 				break;
 			case ConstantsNetwork.LIST:
 				if(fileManager != null) {
-				mainWindow.setGame(
-						fileManager.
-						readList(
-								readResponse()));
+				mainWindow.setGame(fileManager.readList(readResponse()));
 				}
 				break;
 			}

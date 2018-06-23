@@ -16,7 +16,7 @@ public abstract class Connection extends MyThread{
 	private DataInputStream input;
 	private DataOutputStream output;
 	private File path;
-	
+
 	public Connection(Socket socket) throws IOException {
 		this.socket = socket;
 		input = new DataInputStream(socket.getInputStream());
@@ -25,9 +25,9 @@ public abstract class Connection extends MyThread{
 	}
 
 	public void send(String data) throws IOException{
-		output.writeUTF(data);
+			output.writeUTF(data);
 	}
-	
+
 	public void saveFile() throws IOException {
 		File fi = new File("src/persistence");
 		if(!fi.exists()) {
@@ -52,7 +52,7 @@ public abstract class Connection extends MyThread{
 			System.out.println("Recibir "+ e1.toString());
 		}
 	}
-	
+
 	public File getPath() {
 		return path;
 	}
@@ -73,7 +73,7 @@ public abstract class Connection extends MyThread{
 				bos.write(buffer[i]);
 			}
 			bos.flush();
-			
+
 		} catch (IOException e) {
 			System.out.println("Error al crear canal de salida en el servidor.");
 			e.printStackTrace();
@@ -88,11 +88,11 @@ public abstract class Connection extends MyThread{
 	public String readResquest() throws IOException{
 		return input.readUTF();
 	}
-	
+
 	public int readRequestInt() throws IOException {
 		return input.readInt();
 	}
-	
+
 	public DataInputStream getInput() {
 		return input;
 	}
@@ -100,11 +100,11 @@ public abstract class Connection extends MyThread{
 	public DataOutputStream getOutput() {
 		return output;
 	}
-	
+
 	public Socket getSocket() {
 		return socket;
 	}
-	
+
 	public void close() throws IOException{
 		output.close();
 		input.close();

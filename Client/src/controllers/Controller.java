@@ -38,20 +38,21 @@ public class Controller implements KeyListener, ActionListener{
 
 	private void validateLoad() throws IOException {
 		mainWindow = new MainWindow(this);
-		player = new Player(mainWindow.getHeight(), mainWindow.getWidth(), dialogAvatar.getHero(), mainWindow.getIP(),
-				mainWindow.getPort(), mainWindow.getPlayerName());
+		player = new Player(mainWindow.getHeight(), mainWindow.getWidth(), dialogAvatar.getHero(), "localhost"/*mainWindow.getIP()*/,
+				/*mainWindow.getPort()*/2000, mainWindow.getPlayerName());
 		player.send(ConstantsNetwork.GAME);
 		fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
 		player.sendFile(new File(ConstantsUI.PATH_SEND+"game.json"));
 		mainWindow.initPanelDrwaing();
 		player.setWindow(mainWindow, fileManager);
 		mainWindow.setLocalGame(player.getGame());
-		new Timer(10, new ActionListener() {
+		new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				player.setDimesion(mainWindow.getHeight(), mainWindow.getWidth());
 			}
 		}).start();
+		mainWindow.revalidate();
 	}
 
 	@Override

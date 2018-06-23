@@ -12,7 +12,7 @@ import models.dao.MyThread;
 
 public class Game extends MyThread{
 	private Rectangle player;
-	private List<Rectangle> enemyList;
+	private List<Enemy> enemyList;
 	private List<Shoot> shootList;
 	private String avatar;
 	private int x, y;
@@ -44,7 +44,7 @@ public class Game extends MyThread{
 		return background;
 	}
 
-	public List<Rectangle> getEnemyList(){
+	public List<Enemy> getEnemyList(){
 		return enemyList;
 	}
 
@@ -102,10 +102,6 @@ public class Game extends MyThread{
 		player.setLocation((int)player.getX(), (int)player.getY()+20);
 	}
 
-	public void addEnenmy(Rectangle enemy) {
-		enemyList.add(enemy);
-	}
-	
 	public void manageActions(int action) {
 			switch (action) {
 			case KeyEvent.VK_UP:
@@ -135,8 +131,24 @@ public class Game extends MyThread{
 		validateMap();
 		paintShoot();
 		validateShoot();
+		validateLife();
 	}
 
+	public boolean validateLife() {
+		for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
+			Enemy e = enemy.next();
+			System.out.println("intersecta");
+			if(player.intersects(e.getEnemy())) {
+				life -= 5;
+			}
+		}
+		if(life <= 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	private void validateMap() {
 		if(player.getX() >= x) {
 			player.setLocation(x-5, (int)player.getY());
@@ -170,5 +182,9 @@ public class Game extends MyThread{
 				}
 			}
 		}
+	}
+
+	public void setEnemyList(ArrayList<Enemy> enemyList) {
+		this.enemyList = enemyList;
 	}
 }
