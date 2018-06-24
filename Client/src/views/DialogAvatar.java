@@ -1,13 +1,11 @@
 package views;
 
+import java.awt.Color;
+import java.awt.GridLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.TitledBorder;
-
 import constants.ConstantsUI;
 import controllers.Controller;
 import controllers.MyActions;
@@ -15,43 +13,54 @@ import controllers.MyActions;
 public class DialogAvatar extends JDialog{
 
 	private static final long serialVersionUID = 1L;
-	private JLabel lbAvatars;
-	private JSpinner spSelection;
-	private JButton btnAcceptAvatar;
+	private JButton btnCap, btnHulk, btnDead, btnSpider, btnGreen, btnGrood;
 
 	public DialogAvatar(Controller controller) {
-		GridSystem gridSystem = new GridSystem(this);
 		setSize(ConstantsUI.DIMENSION_AVATAR_DIALOG);
+		setLayout(new GridLayout(2, 3));
+		setTitle(ConstantsUI.CHOOSE_HERO);
 
-		lbAvatars = new JLabel(new ImageIcon(getClass().getResource("/img/heros.png")));
-		lbAvatars.setBorder(new TitledBorder(ConstantsUI.CHOOSE_HERO));
-		add(lbAvatars, gridSystem.insertComponent(0, 0, 12, 0.1));
+		btnCap = new JButton(new ImageIcon(getClass().getResource("/img/capitan.png")));
+		btnCap.setName("cap");
+		btnCap.setActionCommand(MyActions.CHOOSE.toString());
+		btnCap.addActionListener(controller);
+		btnCap.setBackground(Color.WHITE);
+		add(btnCap);
+		
+		btnHulk = new JButton(new ImageIcon(getClass().getResource("/img/hulk.png")));
+		btnHulk.setName("hulk");
+		btnHulk.setActionCommand(MyActions.CHOOSE.toString());
+		btnHulk.addActionListener(controller);
+		btnHulk.setBackground(Color.WHITE);
+		add(btnHulk);
+		
+		btnDead = new JButton(new ImageIcon(getClass().getResource("/img/deadpool.png")));
+		btnDead.setName("deadpool");
+		btnDead.setActionCommand(MyActions.CHOOSE.toString());
+		btnDead.addActionListener(controller);
+		btnDead.setBackground(Color.WHITE);
+		add(btnDead);
+		
+		btnSpider = new JButton(new ImageIcon(getClass().getResource("/img/spiderman.png")));
+		btnSpider.setActionCommand(MyActions.CHOOSE.toString());
+		btnSpider.setName("spider");
+		btnSpider.addActionListener(controller);
+		btnSpider.setBackground(Color.WHITE);
+		add(btnSpider);
+		
+		btnGreen = new JButton(new ImageIcon(getClass().getResource("/img/greenlatern.png")));
+		btnGreen.setName("green");
+		btnGreen.setActionCommand(MyActions.CHOOSE.toString());
+		btnGreen.addActionListener(controller);
+		btnGreen.setBackground(Color.WHITE);
+		add(btnGreen);
+		
+		btnGrood = new JButton(new ImageIcon(getClass().getResource("/img/groot.png")));
+		btnGrood.setName("groot");
+		btnGrood.setActionCommand(MyActions.CHOOSE.toString());
+		btnGrood.addActionListener(controller);
+		btnGrood.setBackground(Color.WHITE);
+		add(btnGrood);
 
-		spSelection = new JSpinner(new SpinnerNumberModel(1, 1, 6, 1));
-		add(spSelection, gridSystem.insertComponent(1, 4, 4, 0.01));
-
-		btnAcceptAvatar = new JButton(ConstantsUI.ACCEPT);
-		btnAcceptAvatar.setActionCommand(MyActions.CHOOSE.toString());
-		btnAcceptAvatar.addActionListener(controller);
-		add(btnAcceptAvatar, gridSystem.insertComponent(2, 0, 12, 0.01));
-
-	}
-
-	public String getHero() {
-		switch (Integer.parseInt(spSelection.getValue().toString())) {
-		case 1:
-			return ConstantsUI.CAP;
-		case 2:
-			return ConstantsUI.SPIDER;
-		case 3:
-			return ConstantsUI.HULK;
-		case 4:
-			return ConstantsUI.GROOT;
-		case 5:
-			return ConstantsUI.POOL;
-		case 6:
-			return ConstantsUI.LATERN;
-		}
-		return ConstantsUI.GUNMAN_IMG;
 	}
 }

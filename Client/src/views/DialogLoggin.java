@@ -17,12 +17,15 @@ public class DialogLoggin extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private JButton btnInstrusctions, btnPlay, btnMoreInfo, btnExit;
 	private JLabel lbIcon, lbTitle;
+	private DialogNetwork dialogNetwork;
 	
 	public DialogLoggin(Controller controller) {
 		GridSystem gridSystem = new GridSystem(this);
 		setSize(ConstantsUI.DIMENSION_DIALOG_INIT_I);
 		setLocationRelativeTo(null);
 		setBackground(Color.WHITE);
+		
+		dialogNetwork = new DialogNetwork(controller);
 		
 		lbTitle = new JLabel(ConstantsUI.TITLE_GAME);
 		lbTitle.setHorizontalAlignment(0);
@@ -75,5 +78,21 @@ public class DialogLoggin extends JDialog{
 		add(btnExit, gridSystem.insertComponent(6, 1, 10, 0.01));
 		
 		setVisible(true);
+	}
+	
+	public String getIP() {
+		return dialogNetwork.getIp();
+	}
+
+	public int getPort() {
+		return dialogNetwork.getPort();
+	}
+	
+	public String getPlayerName() {
+		return dialogNetwork.getName();
+	}
+	
+	public void visibilityDialog(boolean option) {
+		dialogNetwork.setVisible(option);
 	}
 }

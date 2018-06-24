@@ -76,5 +76,7 @@ public class ConstantsUI {
 	public static final String POOL = "/img/deadpool.png";
 	public static final String LATERN = "/img/greenlatern.png";
 	public static final String PATH = "src/persistence/file.json";
+	public static final String TITLE_NETWORK = "Select the port and ip for the conections";
+	public static final Color COLOR_NETWORK_DIALOG = Color.decode("#3498db");
 	
 }

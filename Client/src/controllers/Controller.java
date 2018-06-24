@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.Timer;
 
 import constants.ConstantsNetwork;
@@ -36,10 +37,10 @@ public class Controller implements KeyListener, ActionListener{
 		dialogAvatar = new DialogAvatar(this);
 	}
 
-	private void validateLoad() throws IOException {
+	private void validateLoad(String avatar) throws IOException {
 		mainWindow = new MainWindow(this);
-		player = new Player(mainWindow.getHeight(), mainWindow.getWidth(), dialogAvatar.getHero(), "localhost"/*mainWindow.getIP()*/,
-				/*mainWindow.getPort()*/2000, mainWindow.getPlayerName());
+		player = new Player(mainWindow.getHeight(), mainWindow.getWidth(), avatar, dialogLoggin.getIP(),
+				dialogLoggin.getPort(), dialogLoggin.getPlayerName());
 		player.send(ConstantsNetwork.GAME);
 		fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
 		player.sendFile(new File(ConstantsUI.PATH_SEND+"game.json"));
@@ -88,17 +89,49 @@ public class Controller implements KeyListener, ActionListener{
 			moreInfo();
 			break;
 		case PLAY:
-			play();
+			acceptRegistry();
 			break;
 		case CHOOSE:
 			dialogAvatar.setVisible(false);
 			try {
-				validateLoad();
+				validateLoad(selectAvatar(((JButton)e.getSource()).getName()));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			break;
+		case ACCEPT_REGISTRY:
+			play();
+			break;
 		}
+	}
+
+	private void play() {
+		dialogLoggin.visibilityDialog(false);
+		dialogAvatar.setVisible(true);
+		dialogLoggin.setVisible(false);
+	}
+
+	private void acceptRegistry() {
+		dialogLoggin.setVisible(false);
+		dialogLoggin.visibilityDialog(true);
+	}
+
+	private String selectAvatar(String string) {
+		switch (string) {
+		case "cap":
+			return ConstantsUI.CAP;
+		case "groot":
+			return ConstantsUI.GROOT;
+		case "deadpool":
+			return ConstantsUI.POOL;
+		case "spider":
+			return ConstantsUI.SPIDER;
+		case "hulk":
+			return ConstantsUI.HULK;
+		case "green":
+			return ConstantsUI.LATERN;
+		}
+		return ConstantsUI.CAP;
 	}
 
 	private void moreInfo() {
@@ -107,10 +140,5 @@ public class Controller implements KeyListener, ActionListener{
 
 	private void instruction() {
 		dialogInstructions.setVisible(true);
-	}
-
-	private void play() {
-		dialogAvatar.setVisible(true);
-		dialogLoggin.setVisible(false);
 	}
 }

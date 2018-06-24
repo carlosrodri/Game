@@ -21,7 +21,7 @@ public class Game extends MyThread{
 	private String name;
 
 	public Game(int x, int y, String avatar, String name) {
-		super(100);
+		super(90);
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -95,7 +95,6 @@ public class Game extends MyThread{
 
 	public void moveUp() {
 		player.setLocation((int)player.getX(), (int)player.getY()-20);
-		System.out.println("ARRIBA" + (int)player.getX() + "   " + (int)player.getY());
 	}
 
 	public void moveDown() {

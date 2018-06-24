@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
-
 import controllers.Controller;
 import models.entities.Game;
 
@@ -51,18 +48,6 @@ public class MainWindow extends JFrame{
 		add(panelDrawing, BorderLayout.CENTER);
 	}
 	
-	public String getIP() {
-		return JOptionPane.showInputDialog("IP");
-	}
-
-	public int getPort() {
-		return Integer.parseInt(JOptionPane.showInputDialog("Port"));
-	}
-	
-	public String getPlayerName() {
-		return JOptionPane.showInputDialog("Name");
-	}
-
 	public void setLocalGame(Game game) {
 		panelDrawing.setLocalGame(game);
 	}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import constants.ConstantsNetwork;
 import models.entities.Enemy;
@@ -74,28 +75,36 @@ public class Server {
 	}
 
 	public static void sendMessageALL() throws IOException{
-		if(fileManagerServer != null && myUtilities != null) {
+		if(fileManagerServer != null && myUtilities != null && myUtilities.getGameList().size() > 0) {
 			//			fileManagerServer.writeGameList(myUtilities.getGameList());
-			for (ClientConnections clientConnections2 : clientConnections) {
+			for (Iterator<ClientConnections> c =  clientConnections.iterator(); c.hasNext();) {
+				ClientConnections conection = c.next();
 				try {
-					if (clientConnections2.getSocket().isConnected()) {
-						clientConnections2.send(ConstantsNetwork.LIST);
-						clientConnections2.send(fileManagerServer.writeGameList(myUtilities.getGameList()));
+					if (conection.getSocket().isConnected()) {
+						conection.send(ConstantsNetwork.LIST);
+						conection.send(fileManagerServer.writeGameList(myUtilities.getGameList()));
 					}else {
-						JOptionPane.showMessageDialog(null, "the player " + clientConnections2.getName() + "  has been desconnected");
-						clientConnections2.close();
+						JOptionPane.showMessageDialog(null, "the player " + conection.getName() + "  has been desconnected");
+						conection.close();
 					}
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "the player " + clientConnections2.getName() + "  has been desconnected");
-					clientConnections2.close();
-					deeleteConection(clientConnections2);
+					JOptionPane.showMessageDialog(null, "the player " + conection.getName() + "  has been desconnected");
+					conection.close();
+					deeleteConection(conection.getName());
+					c.remove();
 				}
 			}
 		}
 	}
 
-	private static void deeleteConection(ClientConnections clientConnections2) {
-		clientConnections.remove(clientConnections2);
+	private static void deeleteConection(String name) {
+		Game g = null;
+		for (Game game : myUtilities.getGameList()) {
+			if(game.getName().equals(name)) {
+				g = game;
+			}
+		}
+		myUtilities.getGameList().remove(g);
 	}
 
 	public static void main(String[] args) {
