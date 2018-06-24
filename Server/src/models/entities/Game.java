@@ -62,10 +62,11 @@ public class Game extends MyThread{
 		}
 	}
 
-	private void paintShoot() {
-		for (Shoot shoot : shootList) {
-			shoot.getRectangle().setLocation((int)shoot.getRectangle().getX()+15, 
-					(int)shoot.getRectangle().getY());
+	private synchronized void paintShoot() {
+		for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
+			Shoot s = shoot.next();
+			s.getRectangle().setLocation((int)s.getRectangle().getX()+15, 
+					(int)s.getRectangle().getY());
 		}
 	}
 
@@ -143,7 +144,7 @@ public class Game extends MyThread{
 		this.y = height;
 	}
 
-	public void manageActions(int action) {
+	public synchronized void manageActions(int action) {
 		switch (action) {
 		case KeyEvent.VK_UP:
 			moveUp();

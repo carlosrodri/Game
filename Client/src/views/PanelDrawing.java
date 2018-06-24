@@ -67,7 +67,7 @@ public class PanelDrawing extends JPanel{
 
 	private void paintPlayer(Graphics g, Game game) {
 		if(!game.getName().equals(this.game.getName()) && this.game != null) {
-			g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getX(), (int)game.getY(), (int)game.getPlayer().getWidth(),
+			g.drawImage(new ImageIcon(getClass().getResource(this.game.getAvatar())).getImage(),(int)game.getX(), (int)game.getY(), (int)game.getPlayer().getWidth(),
 					(int)game.getPlayer().getHeight(), this);
 			g.setColor(Color.WHITE);
 			g.drawString(game.getName(), game.getX()+5, game.getY()-5);
@@ -75,7 +75,7 @@ public class PanelDrawing extends JPanel{
 			g.drawImage(new ImageIcon(getClass().getResource(this.game.getAvatar())).getImage(),(int)this.game.getPlayer().getX(), (int)this.game.getPlayer().getY(), 50,
 					50, this);
 			g.setColor(Color.WHITE);
-			g.drawString(game.getName(), game.getX()+5, game.getY()-5);
+			g.drawString(this.game.getName(), this.game.getX()+5, game.getY()-5);
 		}
 	}
 
@@ -151,6 +151,9 @@ public class PanelDrawing extends JPanel{
 			break;
 		case 4:
 			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL4)).getImage();
+			break;
+		default:
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
 			break;
 		}
 	}

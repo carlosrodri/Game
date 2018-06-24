@@ -3,6 +3,8 @@ package persistence;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -37,7 +39,7 @@ public class JSONFileManagerServer{
 		return g;
 	}
 
-	public String writeGameList(ArrayList<Game> gameList) {
+	public synchronized String writeGameList(ArrayList<Game> gameList) {
 		String format = "";
 		for (Game game : gameList) {
 			format += game.getPlayer().getX()+"=";
@@ -45,10 +47,11 @@ public class JSONFileManagerServer{
 			format += game.getAvatar()+"=";
 			if(game.getList().size() > 0) {
 				try {
-					for (Shoot shoot : game.getList()) {
-						format += shoot.getRectangle().getX()+"_";
-						format += shoot.getRectangle().getY()+"_";
-						format += shoot.getTypeOfHablility().toString()+"_";
+					for (Iterator<Shoot> shoot =  game.getList().iterator(); shoot.hasNext();) {
+						Shoot s = shoot.next();
+						format += s.getRectangle().getX()+"_";
+						format += s.getRectangle().getY()+"_";
+						format += s.getTypeOfHablility().toString()+"_";
 						format += "%";
 					}
 				} catch (Exception e) {

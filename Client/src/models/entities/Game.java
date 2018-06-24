@@ -135,7 +135,7 @@ public class Game extends MyThread{
 		validateEnemy();
 	}
 
-	public int validateEnemy() {
+	public synchronized int validateEnemy() {
 		for (Iterator<Shoot> shoot = shootList.iterator(); shoot.hasNext();) {
 			Shoot s = shoot.next();
 			for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
