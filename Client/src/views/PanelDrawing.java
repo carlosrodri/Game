@@ -3,7 +3,6 @@ package views;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -18,16 +17,16 @@ public class PanelDrawing extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Game> gameList;
-	private Image enemyI, background, ulti, basic;
+	private Image enemyI, background, ulti, basic, enemyB;
 	private final int POSITION_Y_STRING = 73;
 	private final int POSITION_Y_HABILITY = 30;
 	private Game game;
 
 	public PanelDrawing(Controller controller) {
 		enemyI = new ImageIcon(getClass().getResource(ConstantsUI.RIVAL_SHOOT_IMG)).getImage();
+		enemyB = new ImageIcon(getClass().getResource(ConstantsUI.BOSS_IMG)).getImage();
 		basic = new ImageIcon(getClass().getResource(ConstantsUI.BASIC_SHOOT)).getImage();
 		ulti = new ImageIcon(getClass().getResource(ConstantsUI.ULTI_SHOOT)).getImage();
-		background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
 		this.addKeyListener(controller);
 	}
 
@@ -36,13 +35,12 @@ public class PanelDrawing extends JPanel{
 		super.paint(g);
 		g.drawImage(background, 0, 0, getWidth(), getHeight(),this);
 		if(gameList != null) {
-			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
 			for (Game game : gameList) {
 				paintPlayer(g, game);
-				paintEnemy(g, game);
 				paintShoot(g, game);
 			}
 		}
+		paintEnemy(g);
 		paintLife(g);
 		paintHabilities(g);
 	}
@@ -114,10 +112,14 @@ public class PanelDrawing extends JPanel{
 		return ConstantsUI.BASIC_SHOOT;
 	}
 
-	public void paintEnemy(Graphics g, Game game) {
+	public void paintEnemy(Graphics g) {
 		if(game.getEnemyList() != null && game.getEnemyList().size() != 0) {
 			for (Enemy enemy : game.getEnemyList()) {
-				g.drawImage(enemyI,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
+				if(enemy.getId() == 1000) {
+				g.drawImage(enemyB,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
+				}else {
+					g.drawImage(enemyI,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
+				}
 			}
 		}
 	}
@@ -128,5 +130,22 @@ public class PanelDrawing extends JPanel{
 
 	public void setLocalGame(Game game) {
 		this.game = game;
+	}
+
+	public void setBack(int i) {
+		switch (i) {
+		case 1:
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL1)).getImage();
+			break;
+		case 2:
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL2)).getImage();
+			break;
+		case 3:
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL3)).getImage();
+			break;
+		case 4:
+			background = new ImageIcon(getClass().getResource(ConstantsUI.LEVEL4)).getImage();
+			break;
+		}
 	}
 }

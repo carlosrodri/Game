@@ -2,54 +2,19 @@ package persistence;
 
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import constants.ConstantsUI;
 import models.dao.Hability;
 import models.entities.Enemy;
 import models.entities.Game;
 import models.entities.Shoot;
 
 public class JSONFileManager{
-
+	private ArrayList<Enemy> enemiesList;
 
 	public JSONFileManager() {
-	}
-
-	public ArrayList<Game> readFile() throws FileNotFoundException, IOException{
-		JSONParser parser = new JSONParser();  
-		Object obj = null;
-		try {
-			obj = parser.parse(new FileReader(ConstantsUI.PATH));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}  
-		JSONArray listJSON = (JSONArray) obj;
-		ArrayList<Game> list = new ArrayList<>();
-		for (Object object : listJSON) {
-			JSONObject objCyclist = new JSONObject();
-
-			objCyclist = (JSONObject) object;
-
-			JSONObject o = (JSONObject) objCyclist.get("player");
-			Game g = new Game( 
-					Integer.parseInt(o.get("x").toString()),
-					Integer.parseInt(o.get("y").toString()),
-					o.get("avatar").toString(),
-					o.get("nombre").toString());
-			g.setLife(Integer.parseInt(o.get("life").toString()));
-			g.setBackground(o.get("background").toString());
-			g.setPosition(Integer.parseInt(o.get("posx").toString()), Integer.parseInt(o.get("posy").toString()));
-			list.add(g);
-		}
-		return list;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,7 +48,7 @@ public class JSONFileManager{
 		String p[] = readResponse.split("#");
 		for (int i = 0; i < p.length; i++) {
 			ArrayList<Shoot> shootList = new ArrayList<>();
-			ArrayList<Enemy> enemyList = new ArrayList<>();
+			enemiesList = new ArrayList<>();
 			String g[] = p[i].split("=");
 			Game game = new Game((int)Double.parseDouble(g[0]), (int)Double.parseDouble(g[1]), g[2], g[5]);
 			if(!g[3].equals("-") ) {
@@ -99,13 +64,13 @@ public class JSONFileManager{
 				String shoot[] = g[4].split("%");
 				for (int j = 0; j < shoot.length; j++) {
 					String c[] = shoot[j].split("_");
-					Enemy enemy = new Enemy();
-					enemy.setPosition((int)Double.parseDouble(c[0]), (int)Double.parseDouble(c[1]));
-					enemy.setLifeServer(Integer.parseInt(c[2]));
-					enemyList.add(enemy);
+					Enemy enemy = new Enemy(Integer.parseInt(c[0]));
+					enemy.setPosition((int)Double.parseDouble(c[1]), (int)Double.parseDouble(c[2]));
+					enemy.setLifeServer(Integer.parseInt(c[3]));
+					enemiesList.add(enemy);
 				}
 			}
-			game.setEnemyList(enemyList);
+//			game.setEnemyList(enemyList);
 			game.setShootList(shootList);
 			list.add(game);
 		}
@@ -122,5 +87,12 @@ public class JSONFileManager{
 			return Hability.PASIVE;
 		}
 		return Hability.BASIC;
+	}
+	
+	public ArrayList<Enemy> getEnemiesList() {
+		for (Enemy enemy : enemiesList) {
+			System.out.println(enemy.getId() + "   id del enemigo");
+		}
+		return enemiesList;
 	}
 }

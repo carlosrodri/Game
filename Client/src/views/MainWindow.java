@@ -33,12 +33,6 @@ public class MainWindow extends JFrame{
 		setVisible(true);
 	}
 
-//	public void paint() {
-//		panelDrawing.repaint();
-//		panelDrawing.revalidate();
-//		this.repaint();
-//	}
-
 	public void setGame(ArrayList<Game> gameList) {
 		panelDrawing.setGame(gameList);
 	}
@@ -50,5 +44,9 @@ public class MainWindow extends JFrame{
 	
 	public void setLocalGame(Game game) {
 		panelDrawing.setLocalGame(game);
+	}
+
+	public void paintlevel(int level) {
+		panelDrawing.setBack(level);
 	}
 }

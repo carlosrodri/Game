@@ -16,7 +16,7 @@ import constants.ConstantsUI;
 public class DialogInstructions extends JDialog{
 	
 	private static final long serialVersionUID = 1L;
-	private JLabel lbTitle, lbHabilities, lbImgAbility, lbMovement;
+	private JLabel lbTitle, lbHabilities, lbImgAbility, lbMovement, lbBoss;
 	private JPanel panelCneter;
 	
 	public DialogInstructions() {
@@ -34,6 +34,11 @@ public class DialogInstructions extends JDialog{
 		lbHabilities.setHorizontalAlignment(0);
 		lbHabilities.setFont(ConstantsUI.FONT_TEXT);
 		
+		lbBoss = new JLabel(new ImageIcon(getClass().getResource(ConstantsUI.BOSS)));
+		lbBoss.setForeground(ConstantsUI.RED_COLOR_AVENGERS);
+		lbBoss.setHorizontalAlignment(0);
+		lbBoss.setFont(ConstantsUI.FONT_TEXT);
+		
 		lbImgAbility = new JLabel(new ImageIcon(getClass().getResource("/img/abilities.png")));
 		
 		Image i = new ImageIcon(getClass().getResource("/img/movement.jpg")).getImage().getScaledInstance(200, 150, 10);
@@ -41,10 +46,11 @@ public class DialogInstructions extends JDialog{
 		lbMovement = new JLabel(new ImageIcon(i));
 		
 		panelCneter = new JPanel();
-		panelCneter.setLayout(new GridLayout(3,1));
+		panelCneter.setLayout(new GridLayout(4,1));
 		panelCneter.add(lbHabilities);
 		panelCneter.add(lbImgAbility);
 		panelCneter.add(lbMovement);
+		panelCneter.add(lbBoss);
 		add(new JScrollPane(panelCneter), BorderLayout.CENTER);
 	}
 	

@@ -7,5 +7,7 @@ public class ConstantsNetwork {
 	public static final String SHOOT = "SHOOT";
 	public static final String MOVEMENT = "MOVEMENT";
 	public static final String LIST = "LIST";
+	public static final String ENEMY = "ENEMY";
+	public static final String LEVEL = "LEVEL";
 
 }

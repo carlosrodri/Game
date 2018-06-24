@@ -6,12 +6,14 @@ public class Enemy extends MyThread{
 	private Rectangle enemy;
 	private int life;
 	private int x;
+	private int id;
 
-	public Enemy(int x) {
+	public Enemy(int x, int id, int life, int sleep) {
 		super(1000);
 		enemy = new Rectangle(x, randomY(), 40, 40);
-		life = 100;
+		this.life = life;
 		this.x = x;
+		this.id = id;
 	}
 
 	public Rectangle getEnemy() {
@@ -23,7 +25,7 @@ public class Enemy extends MyThread{
 	}
 	
 	public void setLife(int life) {
-		life += life;
+		this.life += life;
 	}
 	
 	private int randomY() {
@@ -54,5 +56,9 @@ public class Enemy extends MyThread{
 			return false;
 		}
 		
+	}
+	
+	public int getId() {
+		return id;
 	}
 }

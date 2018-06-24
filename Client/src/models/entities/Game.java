@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import constants.ConstantsUI;
 import models.dao.Hability;
 import models.dao.MyThread;
@@ -129,11 +131,25 @@ public class Game extends MyThread{
 	public void executeTask() {
 		validateMap();
 		paintShoot();
-		validateShoot();
 		validateLife();
+		validateEnemy();
 	}
 
-	public boolean validateLife() {
+	public int validateEnemy() {
+		for (Iterator<Shoot> shoot = shootList.iterator(); shoot.hasNext();) {
+			Shoot s = shoot.next();
+			for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
+				Enemy e = enemy.next();
+				if(s.getRectangle().intersects(e.getEnemy())) {
+					return e.getId();
+				}
+			}
+		}
+		return -1;
+	}
+
+	
+	public void validateLife() {
 		for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
 			Enemy e = enemy.next();
 			System.out.println("intersecta");
@@ -142,9 +158,8 @@ public class Game extends MyThread{
 			}
 		}
 		if(life <= 0) {
-			return true;
-		}else {
-			return false;
+			JOptionPane.showMessageDialog(null, "You lose");
+			System.exit(0);
 		}
 	}
 	
@@ -171,18 +186,6 @@ public class Game extends MyThread{
 		this.shootList = shoots;
 	}
 	
-	private void validateShoot() {
-		if(shootList.size() > 0) {
-			for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
-				Shoot s = shoot.next();
-				if(s.getRectangle().getX() > x) {
-					System.out.println("remueve en   "+ x);
-					shoot.remove();
-				}
-			}
-		}
-	}
-
 	public void setEnemyList(ArrayList<Enemy> enemyList) {
 		this.enemyList = enemyList;
 	}

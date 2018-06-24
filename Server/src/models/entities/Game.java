@@ -47,35 +47,7 @@ public class Game extends MyThread{
 	public void executeTask() {
 		validateMap();
 		paintShoot();
-		validateShoot();
 		validateLife();
-	}
-
-	private void validateShoot() {
-		if(shootList.size() > 0) {
-			for (Iterator<Shoot> shoot =  shootList.iterator(); shoot.hasNext();) {
-				Shoot s = shoot.next();
-				if(s.getRectangle().getX() > x) {
-					System.out.println("remueve en   "+ x);
-					shoot.remove();
-				}
-			}
-		}
-	}
-	
-	public void validateEnemy() {
-		for (Iterator<Shoot> shoot = shootList.iterator(); shoot.hasNext();) {
-			Shoot s = shoot.next();
-			for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
-				Enemy e = enemy.next();
-				if(s.getRectangle().intersects(e.getEnemy())) {
-					e.setLife(-10);
-				}
-				if(e.validate()) {
-					enemy.remove();
-				}
-			}
-		}
 	}
 
 	private void validateMap() {

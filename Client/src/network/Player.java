@@ -23,14 +23,16 @@ public class Player extends Connection{
 
 	@Override
 	void executeTask() {
+		validateEnemy();
 		try {
 			switch (readResponse()) {
-			case ConstantsNetwork.FILE:
-//				readFile();
+			case ConstantsNetwork.LEVEL:
+				level(Integer.parseInt(readResponse()));
 				break;
 			case ConstantsNetwork.LIST:
 				if(fileManager != null) {
-				mainWindow.setGame(fileManager.readList(readResponse()));
+					mainWindow.setGame(fileManager.readList(readResponse()));
+					game.setEnemyList(fileManager.getEnemiesList());
 				}
 				break;
 			}
@@ -38,26 +40,27 @@ public class Player extends Connection{
 		}
 	}
 
+	private void level(int level) {
+		mainWindow.paintlevel(level);
+	}
+
+	private void validateEnemy() {
+		if(game != null) {
+			int validate = game.validateEnemy();
+			if(validate > -1) {
+				try {
+					send(ConstantsNetwork.ENEMY);
+					sendInt(validate);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	public String getName() {
 		return game.getName();
 	}
-
-//	private void readFile() {
-//		try {
-//			saveFile();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			if(mainWindow != null && fileManager != null) {
-//				mainWindow.setGame(fileManager.readFile());
-//			}
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	public Game getGame() {
 		return game;
@@ -67,7 +70,7 @@ public class Player extends Connection{
 		this.mainWindow = mainWindow;
 		this.fileManager = fileManager;
 	}
-	
+
 	public void manageMovemenet(int key) {
 		game.manageActions(key);
 	}

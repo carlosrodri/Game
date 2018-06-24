@@ -18,7 +18,6 @@ public class ClientConnections extends Connection{
 	public ClientConnections(Socket newConnection) throws IOException {
 		super(newConnection);
 		new Timer(100, new  ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -41,11 +40,22 @@ public class ClientConnections extends Connection{
 			case ConstantsNetwork.MOVEMENT:
 				enqueue();
 				break;
+			case ConstantsNetwork.ENEMY:
+				quitLifeEnemy();
+				break;
 			default:
 				this.name = option;
 				break;
 			}
 		} catch (IOException e) {
+		}
+	}
+
+	private void quitLifeEnemy() {
+		try {
+			Server.quitLifeEnemy(readRequestInt());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

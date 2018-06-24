@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -17,8 +16,7 @@ import controllers.MyActions;
 public class DialogNetwork extends JDialog{
 
 	private static final long serialVersionUID = 1L;
-	private JTextField tfIp, tfName;
-	private JFormattedTextField tfPort;
+	private JTextField tfIp, tfName, tfPort;
 	private JButton btnAccept;
 	private JLabel lbTitle;
 	
@@ -69,7 +67,7 @@ public class DialogNetwork extends JDialog{
 		});
 		add(tfIp, gridSystem.insertComponent(2, 1, 11, 0.01));
 		
-		tfPort = new JFormattedTextField(new Integer(10000));
+		tfPort = new JTextField();
 		tfPort.setBorder(new TitledBorder("Select the port of conection"));
 		tfPort.setText("2000");
 		tfPort.setBackground(ConstantsUI.COLOR_NETWORK_DIALOG);

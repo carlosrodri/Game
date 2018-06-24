@@ -45,6 +45,7 @@ public class Controller implements KeyListener, ActionListener{
 		fileManager.writeFile(ConstantsUI.PATH_SEND, player.getGame());
 		player.sendFile(new File(ConstantsUI.PATH_SEND+"game.json"));
 		mainWindow.initPanelDrwaing();
+		mainWindow.paintlevel(1);
 		player.setWindow(mainWindow, fileManager);
 		mainWindow.setLocalGame(player.getGame());
 		new Timer(100, new ActionListener() {

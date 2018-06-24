@@ -7,11 +7,13 @@ import models.dao.MyThread;
 public class Enemy extends MyThread{
 	private Rectangle enemy;
 	private int life;
+	private int id;
 
-	public Enemy() {
+	public Enemy(int id) {
 		super(3000);
 		enemy = new Rectangle(randomX(), randomY(), 40, 40);
 		life = 100;
+		this.id = id;
 	}
 
 	public Rectangle getEnemy() {
@@ -50,6 +52,10 @@ public class Enemy extends MyThread{
 	private void paintLocation() {
 		System.out.println("random de y   " + randomX());
 		enemy.setLocation((int)enemy.getX()-10, randomY());
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public void setPosition(int parseDouble, int parseDouble2) {
