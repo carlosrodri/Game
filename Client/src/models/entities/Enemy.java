@@ -50,7 +50,6 @@ public class Enemy extends MyThread{
 	}
 
 	private void paintLocation() {
-		System.out.println("random de y   " + randomX());
 		enemy.setLocation((int)enemy.getX()-10, randomY());
 	}
 	

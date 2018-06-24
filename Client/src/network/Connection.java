@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 public abstract class Connection extends MyThread{
 
 	private Socket socket;
@@ -17,10 +19,19 @@ public abstract class Connection extends MyThread{
 	private DataOutputStream output;
 
 
-	public Connection(String ip, int port) throws IOException {
-		socket = new Socket(ip, port);
-		input = new DataInputStream(socket.getInputStream());
-		output = new DataOutputStream(socket.getOutputStream());
+	public Connection(String ip, int port) {
+		try {
+			socket = new Socket(ip, port);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "enter a port of a valid server, close the window and try again");
+			System.exit(0);
+		}
+		try {
+			input = new DataInputStream(socket.getInputStream());
+			output = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		start();
 	}
 

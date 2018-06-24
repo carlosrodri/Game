@@ -14,8 +14,10 @@ import network.Server;
 
 
 public class JSONFileManagerServer{
+	private Server server;
 
-	public JSONFileManagerServer() {
+	public JSONFileManagerServer(Server server) {
+		this.server = server;
 	}
 
 	public Game readGame() {
@@ -35,26 +37,43 @@ public class JSONFileManagerServer{
 		return g;
 	}
 
-	public String writeGameList(ArrayList<Game> gameList) throws IOException {
+	public String writeGameList(ArrayList<Game> gameList) {
 		String format = "";
 		for (Game game : gameList) {
 			format += game.getPlayer().getX()+"=";
 			format += game.getPlayer().getY()+"=";
 			format += game.getAvatar()+"=";
 			if(game.getList().size() > 0) {
-				for (Shoot shoot : game.getList()) {
-					format += shoot.getRectangle().getX()+"_";
-					format += shoot.getRectangle().getY()+"_";
-					format += shoot.getTypeOfHablility().toString()+"_";
-					format += "%";
+				try {
+					for (Shoot shoot : game.getList()) {
+						format += shoot.getRectangle().getX()+"_";
+						format += shoot.getRectangle().getY()+"_";
+						format += shoot.getTypeOfHablility().toString()+"_";
+						format += "%";
+					}
+				} catch (Exception e) {
+					format += "=";
+					if(server.getEnemylist().size() > 0) {
+						for (Enemy enemy : server.getEnemylist()) {
+							format += enemy.getId()+"_";
+							format += enemy.getEnemy().getX()+"_";
+							format += enemy.getEnemy().getY()+"_";
+							format += enemy.getLife()+"_";
+							format += "%";
+						}
+					}else {
+						format += "-";
+					}
+					format += "=";
+					format += game.getName()+"#";
+					break;
 				}
 			}else {
 				format += "-";
 			}
 			format += "=";
-			if(Server.getEnemylist().size() > 0) {
-				System.out.println("entra al server");
-				for (Enemy enemy : Server.getEnemylist()) {
+			if(server.getEnemylist().size() > 0) {
+				for (Enemy enemy : server.getEnemylist()) {
 					format += enemy.getId()+"_";
 					format += enemy.getEnemy().getX()+"_";
 					format += enemy.getEnemy().getY()+"_";

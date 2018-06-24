@@ -152,7 +152,6 @@ public class Game extends MyThread{
 	public void validateLife() {
 		for (Iterator<Enemy> enemy =  enemyList.iterator(); enemy.hasNext();) {
 			Enemy e = enemy.next();
-			System.out.println("intersecta");
 			if(player.intersects(e.getEnemy())) {
 				life -= 5;
 			}

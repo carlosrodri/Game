@@ -19,13 +19,14 @@ import views.MainWindow;
 public class Server {
 
 	private ServerSocket serverSocket;
-	private static int level;
-	private static MyUtilities myUtilities;
-	private static JSONFileManagerServer fileManagerServer;
+	private int level;
+	private MyUtilities myUtilities;
+	private JSONFileManagerServer fileManagerServer;
 	private MainWindow mainWindow;
 	private int p;
+	private Server s = this;
 
-	public static ArrayList<ClientConnections> clientConnections;
+	public ArrayList<ClientConnections> clientConnections;
 
 	public Server() throws IOException {
 		level = 0;
@@ -39,7 +40,7 @@ public class Server {
 			JOptionPane.showMessageDialog(null, "has been creaded in port number: " + serverSocket.getLocalPort());
 		}
 		myUtilities = new MyUtilities();
-		fileManagerServer = new JSONFileManagerServer();
+		fileManagerServer = new JSONFileManagerServer(this);
 		mainWindow = new MainWindow();
 		new Thread(){
 			@Override
@@ -49,7 +50,7 @@ public class Server {
 						System.out.println("Server online...");
 						Socket newConnection = serverSocket.accept();
 						System.out.println("aceptado");
-						ClientConnections c = new ClientConnections(newConnection);
+						ClientConnections c = new ClientConnections(newConnection, s);
 						clientConnections.add(c);
 						mainWindow.setVisible(true);
 					}
@@ -69,9 +70,7 @@ public class Server {
 	}
 
 	private void validateLevel() {
-		System.out.println(myUtilities.getEnemyList().size() + "     tamañoooo");
 		if (myUtilities.getEnemyList().size() == 0) {
-			System.out.println("validaaaaaaaaa");
 			level++;
 			for (ClientConnections clientConnections2 : clientConnections) {
 				try {
@@ -91,7 +90,7 @@ public class Server {
 		return (int)(Math.random()*10000)+p;
 	}
 
-	private static void addEnemies() {
+	private void addEnemies() {
 		for (int i = 0; i < level*5; i++) {
 			Enemy enemy = new Enemy(1250, i, 100, 1000);
 			enemy.initPosition();
@@ -103,11 +102,11 @@ public class Server {
 		myUtilities.addEnemy(enemy);
 	}
 
-	public static ArrayList<ClientConnections> getClientConnections() {
+	public ArrayList<ClientConnections> getClientConnections() {
 		return clientConnections;
 	}
 
-	public static void sendMessageALL() throws IOException{
+	public void sendMessageALL() throws IOException{
 		if(fileManagerServer != null && myUtilities != null && myUtilities.getGameList().size() > 0) {
 			//			fileManagerServer.writeGameList(myUtilities.getGameList());
 			for (Iterator<ClientConnections> c =  clientConnections.iterator(); c.hasNext();) {
@@ -130,7 +129,7 @@ public class Server {
 		}
 	}
 
-	private static void deeleteConection(String name) {
+	private void deeleteConection(String name) {
 		Game g = null;
 		for (Game game : myUtilities.getGameList()) {
 			if(game.getName().equals(name)) {
@@ -148,8 +147,8 @@ public class Server {
 		}
 	}
 
-	public static void game(ClientConnections clientConnections2) {
-		fileManagerServer = new JSONFileManagerServer();
+	public void game(ClientConnections clientConnections2) {
+		fileManagerServer = new JSONFileManagerServer(this);
 		try {
 			clientConnections2.saveFile();
 			Game g = fileManagerServer.readGame();
@@ -166,15 +165,15 @@ public class Server {
 		}
 	}
 
-	public static ArrayList<Game> getList(){
+	public ArrayList<Game> getList(){
 		return myUtilities.getGameList();
 	}
 
-	public static ArrayList<Enemy> getEnemylist(){
+	public ArrayList<Enemy> getEnemylist(){
 		return myUtilities.getEnemyList();
 	}
 
-	public static void quitLifeEnemy(int id) {
+	public void quitLifeEnemy(int id) {
 		for (Iterator<Enemy> enemy = myUtilities.getEnemyList().iterator(); enemy.hasNext();) {
 			Enemy s = enemy.next();
 			if(s.getId() == id) {

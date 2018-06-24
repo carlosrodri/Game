@@ -90,9 +90,6 @@ public class JSONFileManager{
 	}
 	
 	public ArrayList<Enemy> getEnemiesList() {
-		for (Enemy enemy : enemiesList) {
-			System.out.println(enemy.getId() + "   id del enemigo");
-		}
 		return enemiesList;
 	}
 }

@@ -17,9 +17,6 @@ public class MyUtilities {
 	
 	public void add(Game game) {
 		gameList.add(game);
-		for (Game games : gameList) {
-			System.out.println(games.getAvatar()+ "sdbdfsgbdsvb sd");
-		}
 	}
 	
 	public void addEnemy(Enemy enemy) {

@@ -14,14 +14,16 @@ import models.entities.Game;
 
 public class ClientConnections extends Connection{
 	private String name;
+	private Server server;
 
-	public ClientConnections(Socket newConnection) throws IOException {
+	public ClientConnections(Socket newConnection, Server server) throws IOException {
 		super(newConnection);
-		new Timer(100, new  ActionListener() {
+		this.server = server;
+		new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Server.sendMessageALL();
+					server.sendMessageALL();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -53,7 +55,7 @@ public class ClientConnections extends Connection{
 
 	private void quitLifeEnemy() {
 		try {
-			Server.quitLifeEnemy(readRequestInt());
+			server.quitLifeEnemy(readRequestInt());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +64,7 @@ public class ClientConnections extends Connection{
 	private void enqueue() throws IOException {
 		String name = readResquest();
 		int action = readRequestInt();
-		for (Game game : Server.getList()) {
+		for (Game game : server.getList()) {
 			if(game.getName().equals(name)) {
 				game.enqueueActions(action);
 			}
@@ -70,7 +72,7 @@ public class ClientConnections extends Connection{
 	}
 
 	private void game() {
-		Server.game(this);
+		server.game(this);
 	}
 
 	public void sendFile(){
@@ -83,8 +85,5 @@ public class ClientConnections extends Connection{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setServer(Server s) {
 	}
 }

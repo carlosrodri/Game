@@ -61,15 +61,21 @@ public class PanelDrawing extends JPanel{
 		g.drawRect(getWidth()/2, 25, 100, 20);
 		g.setColor(Color.BLACK);
 		g.drawString("LIFE: " + game.getLife(), (getWidth()/2)+25, 40);
+		g.setColor(Color.WHITE);
+		g.drawString(game.getName(), (getWidth()/2)+25, 65);
 	}
 
 	private void paintPlayer(Graphics g, Game game) {
 		if(!game.getName().equals(this.game.getName()) && this.game != null) {
 			g.drawImage(new ImageIcon(getClass().getResource(game.getAvatar())).getImage(),(int)game.getX(), (int)game.getY(), (int)game.getPlayer().getWidth(),
 					(int)game.getPlayer().getHeight(), this);
+			g.setColor(Color.WHITE);
+			g.drawString(game.getName(), game.getX()+5, game.getY()-5);
 		}else {
 			g.drawImage(new ImageIcon(getClass().getResource(this.game.getAvatar())).getImage(),(int)this.game.getPlayer().getX(), (int)this.game.getPlayer().getY(), 50,
 					50, this);
+			g.setColor(Color.WHITE);
+			g.drawString(game.getName(), game.getX()+5, game.getY()-5);
 		}
 	}
 
@@ -116,7 +122,7 @@ public class PanelDrawing extends JPanel{
 		if(game.getEnemyList() != null && game.getEnemyList().size() != 0) {
 			for (Enemy enemy : game.getEnemyList()) {
 				if(enemy.getId() == 1000) {
-				g.drawImage(enemyB,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
+					g.drawImage(enemyB,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
 				}else {
 					g.drawImage(enemyI,(int)enemy.getEnemy().getX(), (int)enemy.getEnemy().getY(), 50, 50, this);
 				}
