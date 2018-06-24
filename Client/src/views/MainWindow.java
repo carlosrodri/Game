@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import controllers.Controller;
@@ -20,6 +22,7 @@ public class MainWindow extends JFrame{
 		setExtendedState(MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 900);
+		setIconImage(new ImageIcon(getClass().getResource("/img/game.png")).getImage());
 		
 		new Timer(10, new ActionListener() {
 			@Override
